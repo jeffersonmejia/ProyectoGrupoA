@@ -3,14 +3,15 @@ package Carcel;
 import java.time.LocalDate;
 import java.util.Scanner;//INGRESO DE DATOS POR TECLADO
 
-public class GrupoA_Persona {
+public abstract class GrupoA_Persona {
 	// DECLARACIÓN DE ATRIBUTOS
-	protected String cedula, nombre, apellido, genero, nacionalidad;
+	protected String cedula, nombre, apellido, nacionalidad;
+	protected char genero;
 	protected int edad, anioNacimiento;
 	protected Scanner cin;// PROTECTED PARA REUTILIZAR SCANNER EN CLASES HIJAS
 	LocalDate fechaActual;
 
-	public GrupoA_Persona(String cedula, String nombre, String apellido, String genero, String nacionalidad, int edad,
+	public GrupoA_Persona(String cedula, String nombre, String apellido, char genero, String nacionalidad, int edad,
 			int anioNacimiento) {
 		// INICIALIZACIÓN DE ATRIBUTOS
 		this.cedula = cedula;
@@ -20,7 +21,9 @@ public class GrupoA_Persona {
 		this.nacionalidad = nacionalidad;
 		this.edad = edad;
 		this.anioNacimiento = anioNacimiento;
+		// INICIALIZACIÓN OBJETO SCANNER PARA PEDIR DATOS POR TECLADO
 		this.cin = new Scanner(System.in);
+		// INICIALIAZCIÓN OBJETO LOCALDATE PARA OBTENER FECHA/HORA ACTUAL
 		fechaActual = LocalDate.now();
 	}
 
@@ -34,14 +37,16 @@ public class GrupoA_Persona {
 				cedula = cin.nextLine();
 			} while (cedula.length() != 10);
 		}
-
+		// DATOS GENERALES
 		System.out.print("Ingrese su nombre: ");
 		nombre = cin.nextLine();
 		System.out.print("Ingrese su apellido: ");
 		apellido = cin.nextLine();
-
-		System.out.print("Ingrese su genero: ");
-		genero = cin.nextLine();
+		do {
+			System.out.print("Ingrese su genero (M/F): ");
+			genero = cin.next().toUpperCase().charAt(0);// OBTIENE CARACTER INGRESADO EN POSICIÓN "
+		} while (genero != 'M' && genero != 'F');
+		cin = new Scanner(System.in);// LIMPIAR BUFFER
 		System.out.print("Ingrese su nacionalidad: ");
 		nacionalidad = cin.nextLine();
 		// CONTROL AÑO DE NACIMIENTO
@@ -51,10 +56,10 @@ public class GrupoA_Persona {
 		} while (anioNacimiento < 1950 || anioNacimiento > 2006);
 		// CALCULO AUTOMATICO DE EDAD
 		edad = fechaActual.getYear() - anioNacimiento;
-
 		// LIMPIAR BUFFER
 		this.cin = new Scanner(System.in);
-
 	}
 
+	// DECLARACIÓN MÉTODO POLIMORFISMO
+	public abstract void mostrarDatos();
 }

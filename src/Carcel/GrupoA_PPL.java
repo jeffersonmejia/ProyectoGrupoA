@@ -19,7 +19,7 @@ public class GrupoA_PPL extends GrupoA_Persona {
 	private Object objectParser;
 	Scanner cin;
 
-	public GrupoA_PPL(String presoId, String cedula, String nombre, String apellido, String genero, String nacionalidad,
+	public GrupoA_PPL(String presoId, String cedula, String nombre, String apellido, char genero, String nacionalidad,
 			int edad, int anioNacimiento, int duracionCondena, int tiempoCumplido, String delito, String fechaIngreso) {
 		// ASIGNACIÓN DE VALORES ATRIBUTOS HEREDADOS
 		super(cedula, nombre, apellido, genero, nacionalidad, edad, anioNacimiento);
@@ -28,15 +28,17 @@ public class GrupoA_PPL extends GrupoA_Persona {
 		this.tiempoCumplido = tiempoCumplido;
 		this.delito = delito;
 		this.fechaIngreso = fechaIngreso;
+		// INICIALIZACIÓN OBJETO SCANNER PARA PEDIR DATOS POR TECLADO
 		cin = new Scanner(System.in);
+		// INICIALIZACIÓN ATRIBUTOS PARA MANIPULACIÓN DE JSON
 		pplJSONArray = new JSONArray();
 		pplJSONObject = new JSONObject();
-		parser = new JSONParser();
+		parser = new JSONParser();// PARSE OBJETO JAVA -> JSON, O VICEVERSA
 	}
 
+	// CONSULTA DATOS PPL POR CÉDULA
 	public void consultarDatosPPL() {
 		pplJSONArray = new JSONArray();
-
 		System.out.println("--------------------------------------");
 		System.out.println("MENÚ > CONSULTA PPL");
 		do {
@@ -57,33 +59,39 @@ public class GrupoA_PPL extends GrupoA_Persona {
 			System.out.println("--------------------------------------");
 			System.out.println("DATOS PPL");
 			// CONVERSIÓN JSON A ARRAY
-			for (Object pplJSONFile : pplJSONArray) {
-				pplJSONObject = (JSONObject) pplJSONFile;
-				// VERIFICA EXISTENCIA POR NOMBRE
-				if (cedula.equals(pplJSONObject.get("cedula"))) {
-					System.out.println("Fecha ingreso: " + pplJSONObject.get("fechaIngreso"));
-					System.out.println("ID: " + pplJSONObject.get("presoId"));
-					System.out.println("Cédula: " + pplJSONObject.get("cedula"));
-					System.out.println("Nombre: " + pplJSONObject.get("nombre"));
-					System.out.println("Apellido: " + pplJSONObject.get("apellido"));
-					System.out.println("Genero: " + pplJSONObject.get("genero"));
-					System.out.println("Nacionalidad: " + pplJSONObject.get("nacionalidad"));
-					System.out.println("Edad: " + pplJSONObject.get("edad") + " años");
-					System.out.println("Año nacimiento: " + pplJSONObject.get("anioNacimiento"));
-					System.out.println("Duracion Condena: " + pplJSONObject.get("duracionCondena") + " años");
-					System.out.println("Tiempo cumplido condena: " + pplJSONObject.get("tiempoCumplido") + " años");
-					System.out.println("Delito: " + pplJSONObject.get("delito"));
-					break;// ROMPE CICLO
-				} else {
-					System.out.println("El PPL con cédula " + cedula + " no está en el sistema");
-					break;// ROMPE CICLO
-				}
-			}
+			mostrarDatos();
 			// MANEJO DE ERRORES EN CASO QUE NO EXISTAA JSON
 		} catch (IOException | ParseException e) {
 			// TODO: handle exception
-			System.out.println("CONSULTA NO REALIZADA...");
+			System.out.println("Consulta no realizada");
 			e.printStackTrace();
+		}
+	}
+
+	// IMPLEMENTACIÓN MÉTODO POLIMORFISMO DE CLASE PADRE PERSONA
+	@Override
+	public void mostrarDatos() {
+		for (Object pplJSONFile : pplJSONArray) {
+			pplJSONObject = (JSONObject) pplJSONFile;
+			// VERIFICA EXISTENCIA POR NOMBRE
+			if (cedula.equals(pplJSONObject.get("cedula"))) {
+				System.out.println("Fecha ingreso: " + pplJSONObject.get("fechaIngreso"));
+				System.out.println("ID: " + pplJSONObject.get("presoId"));
+				System.out.println("Cédula: " + pplJSONObject.get("cedula"));
+				System.out.println("Nombre: " + pplJSONObject.get("nombre"));
+				System.out.println("Apellido: " + pplJSONObject.get("apellido"));
+				System.out.println("Genero: " + pplJSONObject.get("genero"));
+				System.out.println("Nacionalidad: " + pplJSONObject.get("nacionalidad"));
+				System.out.println("Edad: " + pplJSONObject.get("edad") + " años");
+				System.out.println("Año nacimiento: " + pplJSONObject.get("anioNacimiento"));
+				System.out.println("Duracion Condena: " + pplJSONObject.get("duracionCondena") + " años");
+				System.out.println("Tiempo cumplido condena: " + pplJSONObject.get("tiempoCumplido") + " años");
+				System.out.println("Delito: " + pplJSONObject.get("delito"));
+				break;// ROMPE CICLO
+			} else {
+				System.out.println("El PPL con cédula " + cedula + " no está en el sistema");
+				break;// ROMPE CICLO
+			}
 		}
 	}
 }

@@ -17,8 +17,8 @@ public class GrupoA_SistemaPPL {
 		this.opMenu = opMenu;
 		this.horarios = horarios;
 		this.estadoVisita = estadoVisita;
-		visitante = new GrupoA_Visitante("", "", "", "", "", "", 0, 0, "", "", "", "");
-		ppl = new GrupoA_PPL("", "", "", "", "", "", 0, 0, 0, 0, "", "");
+		visitante = new GrupoA_Visitante("", "", "", "", '0', "", 0, 0, "", "", "", "");
+		ppl = new GrupoA_PPL("", "", "", "", '0', "", 0, 0, 0, 0, "", "");
 		cin = new Scanner(System.in);// PARA INGRESO DE DATOS POR TECLADO
 	}
 
@@ -52,6 +52,7 @@ public class GrupoA_SistemaPPL {
 				break;
 			}
 			case 3: {
+				visitante.reservarVisita();
 				break;
 			}
 			case 4: {

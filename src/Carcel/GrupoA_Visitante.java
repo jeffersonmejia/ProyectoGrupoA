@@ -18,7 +18,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 	private JSONParser parser;
 	private boolean existeVisitante;
 
-	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, String genero,
+	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, char genero,
 			String nacionalidad, int edad, int anioNacimiento, String relacionPreso, String motivoVisita,
 			String duracionVisita, String fechaVisita) {
 		// ASIGNACIÓN VALORES DE ATRIBUTOS HEREDADOS
@@ -88,12 +88,12 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		this.guardarDatosVisitante();
 	}
 
-	public void guardarDatosVisitante() {
+	private void guardarDatosVisitante() {
 		// INICIALIZACIÓN OBJETO
 		visitanteJSONObject = new JSONObject();
 		// GUARDADO FORMATO JSON
-		visitanteJSONObject.put("cedula", cedula);
 		visitanteJSONObject.put("visitante ID", visitanteId);
+		visitanteJSONObject.put("cedula", cedula);
 		visitanteJSONObject.put("nombre", nombre);
 		visitanteJSONObject.put("apellido", apellido);
 		visitanteJSONObject.put("genero", genero);
@@ -125,9 +125,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 			file.write(visitanteJSONArray.toJSONString());
 			// LIMPIAR BUFFER ARCHIVO
 			file.flush();
-			System.out.println("--------------------------------------");
-			System.out.println("Registro éxitoso");
-			// readData();
+			mostrarDatos();
 		} catch (Exception e) { //
 			// IMPRIME ERRORES SI NO GUARDA EL ARCHIVO
 			System.out.println("El archivo no existe, se creara uno nuevo");
@@ -135,6 +133,24 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 	}
 
 	public void reservarVisita() {
+		System.out.println("FALTA IMPLEMENTAR");
+	}
 
+	// IMPLEMENTACIÓN MÉTODO POLIMORFISMO DE CLASE PADRE PERSONA
+	@Override
+	public void mostrarDatos() {
+		System.out.println("--------------------------------------");
+		System.out.println("REGISTRO ÉXITOSO - DATOS");
+		System.out.println("Cédula: " + cedula);
+		System.out.println("Nombre: " + nombre);
+		System.out.println("Apellido: " + apellido);
+		System.out.println("Género: " + genero);
+		System.out.println("Nacionalidad: " + nacionalidad);
+		System.out.println("Edad: " + edad);
+		System.out.println("Año nacimiento: " + anioNacimiento);
+		System.out.println("Relación: " + relacionPreso);
+		System.out.println("Motivo preso: " + motivoVisita);
+		System.out.println("Duración visita: " + duracionVisita);
+		System.out.println("Fecha visita: " + fechaVisita);
 	}
 }
