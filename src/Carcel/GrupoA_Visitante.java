@@ -1,9 +1,13 @@
 package Carcel;
 
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 //HEREDA CLASE PERSONA
 public class GrupoA_Visitante extends GrupoA_Persona {
@@ -11,6 +15,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 	private String visitanteId, relacionPreso, motivoVisita, duracionVisita, fechaVisita, VISITANTES_FILE_NAME;
 	private JSONObject visitanteJSONObject;
 	private JSONArray visitanteJSONArray;
+	private JSONParser parser;
 
 	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, String genero,
 			String nacionalidad, int edad, int anioNacimiento, String relacionPreso, String motivoVisita,
@@ -24,12 +29,15 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		this.fechaVisita = fechaVisita;
 		this.visitanteJSONObject = new JSONObject();
 		this.visitanteJSONArray = new JSONArray();
+		parser = new JSONParser();
 		this.VISITANTES_FILE_NAME = "visitantes.json";
 	}
 
 	public void ingresarDatosVisitante() {
 		// PEDIDO DATOS GENERALES
+
 		this.ingresarDatosPersona();
+
 		// PEDIDO DATOS VISITANTE
 		System.out.print("Ingrese su Relacion con el PPL: ");
 		relacionPreso = cin.nextLine();
@@ -62,6 +70,20 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		visitanteJSONObject.put("Duracion Visita", duracionVisita);
 		visitanteJSONObject.put("fecha visita", fechaVisita);
 		visitanteJSONArray.add(visitanteJSONObject);
+
+		// VERIFICAR SI YA EXISTEN DATOS EN EL .JSON
+		JSONParser jsonParser = new JSONParser();
+		try (FileReader reader = new FileReader(VISITANTES_FILE_NAME)) {
+			// PARSEAR .JSON A OBJETO JAVA
+			Object obj = jsonParser.parse(reader);
+			visitanteJSONArray = (JSONArray) obj;
+			// AGREGAR DATOS ANTERIORES
+			visitanteJSONArray.add(visitanteJSONObject);
+		} catch (IOException | ParseException e) {
+			// SI NO EXISTE EL ARCHIVO INICIALIZAR JSON ARRAY NUEVAMENTE
+			visitanteJSONArray = new JSONArray();
+		}
+
 		// GUARDA DATOS DEL .JSON
 		try (FileWriter file = new FileWriter(VISITANTES_FILE_NAME)) {
 			// ESCRITURA JSON
