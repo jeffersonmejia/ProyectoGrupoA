@@ -1,0 +1,35 @@
+[
+    {
+        "nombre": "Justin Mendoza",
+        "genero": "Masculino",
+        "nacionalidad": "Mexicana",
+        "edad": 35,
+        "presoId": 1001,
+        "duracionCondena": 10 ,
+        "tiempoCumplido": 3,
+        "delito": "Robo",
+        "fechaIngreso": "2021-01-15"
+    },
+    {
+        "nombre": "Maria Gonzales",
+        "genero": "Femenino",
+        "nacionalidad": "Argentina",
+        "edad": 28,
+        "presoId": 1002,
+        "duracionCondena": 5,
+        "tiempoCumplido": 2,
+        "delito": "Fraude",
+        "fechaIngreso": "2022-03-10"
+    },
+    {
+        "nombre": "Ana Martinez",
+        "genero": "Femenino",
+        "nacionalidad": "Española",
+        "edad": 32,
+        "presoId": 1004,
+        "duracionCondena": 8,
+        "tiempoCumplido": 5,
+        "delito": "Hurto",
+        "fechaIngreso": "2018-11-05"
+    }
+]
