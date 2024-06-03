@@ -26,11 +26,14 @@ public class GrupoA_Persona {
 
 	// INGRESAR DATOS GENERALES POR TELCADO
 	public void ingresarDatosPersona() {
-		// CONTROL DIGITOS CEDULA
-		do {
-			System.out.print("Ingrese su cedula (10 digitos): ");
-			cedula = cin.nextLine();
-		} while (cedula.length() != 10);
+		// VERIFICA QUE NO SE HAYA INGRESADO DATOS EN LA CEDULA, SI NO SE PIEDE NUEVO
+		if (cedula.length() == 0) {
+			// CONTROL DIGITOS CEDULA
+			do {
+				System.out.print("Ingrese su cedula (10 digitos): ");
+				cedula = cin.nextLine();
+			} while (cedula.length() != 10);
+		}
 
 		System.out.print("Ingrese su nombre: ");
 		nombre = cin.nextLine();

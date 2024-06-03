@@ -1,35 +1,44 @@
 [
     {
-        "nombre": "Justin Mendoza",
-        "genero": "Masculino",
-        "nacionalidad": "Mexicana",
-        "edad": 35,
-        "presoId": 1001,
-        "duracionCondena": 10 ,
-        "tiempoCumplido": 3,
-        "delito": "Robo",
-        "fechaIngreso": "2021-01-15"
+      "cedula": "1317268876"
+      "nombre": "Juan",
+      "apellido": "Pérez",
+      "genero": "Masculino",
+      "nacionalidad": "Mexicana",
+      "edad": 30,
+      "anioNacimiento": 1994,
+      "presoId": "P123",
+      "duracionCondena": 10,
+      "tiempoCumplido": 5,
+      "delito": "Robo",
+      "fechaIngreso": "2019-01-15"
     },
     {
-        "nombre": "Maria Gonzales",
-        "genero": "Femenino",
-        "nacionalidad": "Argentina",
-        "edad": 28,
-        "presoId": 1002,
-        "duracionCondena": 5,
-        "tiempoCumplido": 2,
-        "delito": "Fraude",
-        "fechaIngreso": "2022-03-10"
+      "cedula": "1308772910",
+      "nombre": "María",
+      "apellido": "González",
+      "genero": "Femenino",
+      "nacionalidad": "Ecuatoriana",
+      "edad": 40,
+      "anioNacimiento": 1984,
+      "presoId": "P456",
+      "duracionCondena": 15,
+      "tiempoCumplido": 10,
+      "delito": "Fraude",
+      "fechaIngreso": "2014-03-22"
     },
     {
-        "nombre": "Ana Martinez",
-        "genero": "Femenino",
-        "nacionalidad": "Española",
-        "edad": 32,
-        "presoId": 1004,
-        "duracionCondena": 8,
-        "tiempoCumplido": 5,
-        "delito": "Hurto",
-        "fechaIngreso": "2018-11-05"
+      "cedula": "1309112447",
+      "nombre": "Carlos",
+      "apellido": "López",
+      "genero": "Masculino",
+      "nacionalidad": "Argentina",
+      "edad": 35,
+      "anioNacimiento": 1989,
+      "presoId": "P789",
+      "duracionCondena": 8,
+      "tiempoCumplido": 3,
+      "delito": "Asalto",
+      "fechaIngreso": "2021-07-11"
     }
-]
+  ]

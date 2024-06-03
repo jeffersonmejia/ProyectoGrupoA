@@ -35,8 +35,8 @@ public class GrupoA_SistemaPPL {
 		do {
 			System.out.println("--------------------------------------");
 			System.out.println("SISTEMA CARCELARIO (PPL)");
-			System.out.println("1. Consultar Datos PPL");
-			System.out.println("2. Registrar Datos Visita");
+			System.out.println("1. Consultar PPL");
+			System.out.println("2. Registrar visita");
 			System.out.println("3. Reservar Visita");
 			System.out.println("4. Salir");
 			System.out.print("Ingresa una opción (1-4): ");

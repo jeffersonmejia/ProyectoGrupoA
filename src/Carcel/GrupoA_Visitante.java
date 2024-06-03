@@ -16,6 +16,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 	private JSONObject visitanteJSONObject;
 	private JSONArray visitanteJSONArray;
 	private JSONParser parser;
+	private boolean existeVisitante;
 
 	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, String genero,
 			String nacionalidad, int edad, int anioNacimiento, String relacionPreso, String motivoVisita,
@@ -30,27 +31,61 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		this.visitanteJSONObject = new JSONObject();
 		this.visitanteJSONArray = new JSONArray();
 		parser = new JSONParser();
+		existeVisitante = false;
 		this.VISITANTES_FILE_NAME = "visitantes.json";
 	}
 
 	public void ingresarDatosVisitante() {
+		existeVisitante = false;// REINICIO ATRIBUTO QUE VERIFICA SI EXISTE VISITANTE
 		// PEDIDO DATOS GENERALES
+		System.out.println("--------------------------------------");
+		System.out.println("MENÚ > REGISRO VISITANTE");
 
+		do {
+			// CONTROL DIGITOS CEDULA
+			do {
+				System.out.print("Ingrese su cedula (10 digitos): ");
+				cedula = cin.nextLine();
+			} while (cedula.length() != 10);
+			// CONTROL EXISTENCIA USUARIO VISITANTE
+			try (FileReader reader = new FileReader(VISITANTES_FILE_NAME)) {
+				// PARSEAR .JSON A OBJETO JAVA
+				Object obj = parser.parse(reader);
+				visitanteJSONArray = (JSONArray) obj;
+				// BUSCAR SI YA EXISTE UN VISITANTE CON LA MISMA CÉDULA
+				for (Object object : visitanteJSONArray) {
+					visitanteJSONObject = (JSONObject) object;
+					if (visitanteJSONObject.get("cedula").equals(cedula)) {
+						System.out.println("--------------------------------------");
+						System.out.println("El visitante con cédula " + cedula + " ya existe en el sistema");
+						existeVisitante = true;
+						break;
+					} else {
+						existeVisitante = false;
+					}
+				}
+			} catch (Exception e) {
+				System.out.println("Error al buscar el visitante");
+				e.printStackTrace();
+				existeVisitante = false;
+			}
+		} while (existeVisitante);
+
+		// INGRESO DE DATOS GENERALES
 		this.ingresarDatosPersona();
-
 		// PEDIDO DATOS VISITANTE
-		System.out.print("Ingrese su Relacion con el PPL: ");
+		System.out.print("Relacion con PPL: ");
 		relacionPreso = cin.nextLine();
-		System.out.print("Ingrese su Motivo de la Visita: ");
+		System.out.print("Motivo de la Visita: ");
 		motivoVisita = cin.nextLine();
-		System.out.print("Ingrese su Duracion de su visita: ");
+		System.out.print("Duracion de su visita: ");
 		duracionVisita = cin.nextLine();
-		System.out.print("Ingrese su Fecha de la visita: ");
+		System.out.print("Fecha de la visita: ");
 		fechaVisita = cin.nextLine();
 		// GENERACIÓN ID ÚNICO
 		visitanteId = nombre.toUpperCase() + "-" + fechaVisita.split("/")[0];
 		// GUARDADO DE DATOS EN .JSON
-		guardarDatosVisitante();
+		this.guardarDatosVisitante();
 	}
 
 	public void guardarDatosVisitante() {
@@ -90,7 +125,8 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 			file.write(visitanteJSONArray.toJSONString());
 			// LIMPIAR BUFFER ARCHIVO
 			file.flush();
-			System.out.println("Datos guardados con éxito en " + VISITANTES_FILE_NAME);
+			System.out.println("--------------------------------------");
+			System.out.println("Registro éxitoso");
 			// readData();
 		} catch (Exception e) { //
 			// IMPRIME ERRORES SI NO GUARDA EL ARCHIVO
@@ -98,7 +134,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		}
 	}
 
-	public void mostrarDatosVisitante() {
+	public void reservarVisita() {
 
 	}
 }
