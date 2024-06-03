@@ -44,8 +44,8 @@ public abstract class GrupoA_Persona {
 		apellido = cin.nextLine();
 		do {
 			System.out.print("Ingrese su genero (M/F): ");
-			genero = cin.next().toUpperCase().charAt(0);// OBTIENE CARACTER INGRESADO EN POSICIÓN "
-		} while (genero != 'M' && genero != 'F');
+			genero = cin.next().toUpperCase().charAt(0);// OBTIENE CARACTER INGRESADO EN POSICIÓN
+		} while ((genero != 'M' && genero != 'F') || Character.toString(genero).length() != 1);
 		cin = new Scanner(System.in);// LIMPIAR BUFFER
 		System.out.print("Ingrese su nacionalidad: ");
 		nacionalidad = cin.nextLine();

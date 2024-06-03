@@ -3,6 +3,7 @@ package Carcel;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,6 +34,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		parser = new JSONParser();
 		existeVisitante = false;
 		this.VISITANTES_FILE_NAME = "visitantes.json";
+
 	}
 
 	public void ingresarDatosVisitante() {
@@ -65,8 +67,6 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 					}
 				}
 			} catch (Exception e) {
-				System.out.println("Error al buscar el visitante");
-				e.printStackTrace();
 				existeVisitante = false;
 			}
 		} while (existeVisitante);
@@ -80,10 +80,9 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		motivoVisita = cin.nextLine();
 		System.out.print("Duracion de su visita: ");
 		duracionVisita = cin.nextLine();
-		System.out.print("Fecha de la visita: ");
-		fechaVisita = cin.nextLine();
-		// GENERACIÓN ID ÚNICO
-		visitanteId = nombre.toUpperCase() + "-" + fechaVisita.split("/")[0];
+		fechaVisita = LocalDate.now().toString();
+		// GENERACIÓN ID ÚNICO (NOMBRE & 4 ÚLTIMOS DIGITOS CEDULA)
+		visitanteId = nombre.split("")[0] + cedula.substring(cedula.length() - 4);
 		// GUARDADO DE DATOS EN .JSON
 		this.guardarDatosVisitante();
 	}
@@ -146,7 +145,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		System.out.println("Apellido: " + apellido);
 		System.out.println("Género: " + genero);
 		System.out.println("Nacionalidad: " + nacionalidad);
-		System.out.println("Edad: " + edad);
+		System.out.println("Edad: " + edad + " años");
 		System.out.println("Año nacimiento: " + anioNacimiento);
 		System.out.println("Relación: " + relacionPreso);
 		System.out.println("Motivo preso: " + motivoVisita);
