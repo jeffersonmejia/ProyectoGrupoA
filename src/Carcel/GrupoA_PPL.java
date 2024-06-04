@@ -37,10 +37,10 @@ public class GrupoA_PPL extends GrupoA_Persona {
 	}
 
 	// CONSULTA DATOS PPL POR CÉDULA
-	public void consultarDatosPPL() {
+	public boolean consultarDatosPPL() {
 		pplJSONArray = new JSONArray();
 		System.out.println("--------------------------------------");
-		System.out.println("MENÚ > CONSULTA PPL");
+		System.out.println("DATOS PPL");
 		do {
 			System.out.print("Ingrese la cedula del PPL (10 dígitos): ");
 			cedula = cin.nextLine();
@@ -60,12 +60,12 @@ public class GrupoA_PPL extends GrupoA_Persona {
 			System.out.println("DATOS PPL");
 			// CONVERSIÓN JSON A ARRAY
 			mostrarDatos();
+			return true;
 			// MANEJO DE ERRORES EN CASO QUE NO EXISTAA JSON
 		} catch (IOException | ParseException e) {
-			// TODO: handle exception
-			System.out.println("Consulta no realizada");
-			e.printStackTrace();
+			System.out.println("El PPL con cédula " + cedula + " no existe");
 		}
+		return false;
 	}
 
 	// IMPLEMENTACIÓN MÉTODO POLIMORFISMO DE CLASE PADRE PERSONA

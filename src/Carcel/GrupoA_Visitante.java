@@ -1,9 +1,12 @@
 package Carcel;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,16 +16,19 @@ import org.json.simple.parser.ParseException;
 //HEREDA CLASE PERSONA
 public class GrupoA_Visitante extends GrupoA_Persona {
 	// DECLARACIÓN ATRIBUTO
-	private String visitanteId, relacionPreso, motivoVisita, duracionVisita, fechaVisita, VISITANTES_FILE_NAME;
+	private String visitanteId, relacionPreso, motivoVisita, duracionVisita, fechaVisita, VISITANTES_FILE_NAME,
+			HORARIOS_FILE_NAME, lineReader;;
 	private JSONObject visitanteJSONObject;
 	private JSONArray visitanteJSONArray;
 	private JSONParser parser;
 	private boolean existeVisitante;
 	private Object objectParser;
+	private GrupoA_PPL ppl;
+	private int horarioId;
 
 	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, char genero,
 			String nacionalidad, int edad, int anioNacimiento, String relacionPreso, String motivoVisita,
-			String duracionVisita, String fechaVisita) {
+			String duracionVisita, String fechaVisita, GrupoA_PPL ppl) {
 		// ASIGNACIÓN VALORES DE ATRIBUTOS HEREDADOS
 		super(cedula, nombre, apellido, genero, nacionalidad, edad, anioNacimiento);
 		this.visitanteId = visitanteId;
@@ -30,12 +36,16 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		this.motivoVisita = motivoVisita;
 		this.duracionVisita = duracionVisita;
 		this.fechaVisita = fechaVisita;
+		this.ppl = ppl;
 		this.visitanteJSONObject = new JSONObject();
 		this.visitanteJSONArray = new JSONArray();
-		parser = new JSONParser();
-		existeVisitante = false;
+		this.parser = new JSONParser();
+		this.existeVisitante = false;
 		this.VISITANTES_FILE_NAME = "visitantes.json";
-		objectParser = null;
+		this.HORARIOS_FILE_NAME = "horarios.csv";
+		this.objectParser = null;
+		this.lineReader = "";
+		horarioId = 0;
 
 	}
 
@@ -50,25 +60,21 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 			for (Object object : visitanteJSONArray) {
 				visitanteJSONObject = (JSONObject) object;
 				if (visitanteJSONObject.get("cedula").equals(cedula)) {
-
 					existeVisitante = true;
 					break;
 				} else {
 					existeVisitante = false;
 				}
-
 			}
 		} catch (Exception e) {
 			existeVisitante = false;
 		}
-
 	}
 
 	public void ingresarDatosVisitante() {
 		// PEDIDO DATOS GENERALES
 		System.out.println("--------------------------------------");
 		System.out.println("MENÚ > REGISRO VISITANTE");
-
 		do {
 			do {
 				System.out.print("Ingrese su cedula (10 digitos): ");
@@ -143,16 +149,48 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 	}
 
 	public void reservarVisita() {
+		System.out.println("--------------------------------------");
+		System.out.println("DATOS VISITANTE");
 		do {
 			System.out.print("Ingrese su cedula (10 digitos): ");
 			cedula = cin.nextLine();
-			// CONTROL DIGITOS CEDULA
+			// CONTROLA DIGITOS CEDULA
 		} while (cedula.length() != 10);
-		// CONTROL EXISTENCIA USUARIO VISITANTE
+		// CONTROLA EXISTENCIA USUARIO VISITANTE
 		consultarVisitante(cedula);
 		if (!existeVisitante) {
 			System.out.println("--------------------------------------");
 			System.out.println("La cédula ingresada no existe en el sistema");
+			// SI EXISTE, SELECCIONA HORARIO
+		} else if (ppl.consultarDatosPPL()) {
+
+			// LEE HORARIOS.CSV
+			try (BufferedReader reader = new BufferedReader(new FileReader(HORARIOS_FILE_NAME))) {
+				System.out.println("--------------------------------------");
+				System.out.println("HORARIOS DISPONIBLES:");
+				// LEE LÍNEA A LÍNEA ARCHIVO
+				while ((lineReader = reader.readLine()) != null) {
+					// SEPARA ELEMENTOS ","
+					String[] values = lineReader.split(",");
+					// FORMATEA VALORES CSV
+					System.out.println(String.join(" | ", values));
+				}
+				// SI NO EXISTEN HORARIO DISPONIBLES, REGRESA MENÚ PRINCIPAL
+			} catch (IOException e) {
+				System.err.println("Lo sentimos, no existen horarios disponibles");
+			}
+			// INGRESA HORARIO ID
+			do {
+				try {
+					System.out.println("--------------------------------------");
+					System.out.println("Ingresa el ID del horario (1-7): ");
+					horarioId = cin.nextInt();
+					// CONTROLA QUE EL USUARIO INGRESE VALOR NUMÉRICO
+				} catch (InputMismatchException e) {
+					cin = new Scanner(System.in);
+				}
+			} while (horarioId < 1 || horarioId > 7);
+			// crear .csv "visitas.csv"
 		}
 	}
 
