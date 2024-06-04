@@ -18,6 +18,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 	private JSONArray visitanteJSONArray;
 	private JSONParser parser;
 	private boolean existeVisitante;
+	private Object objectParser;
 
 	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, char genero,
 			String nacionalidad, int edad, int anioNacimiento, String relacionPreso, String motivoVisita,
@@ -34,43 +35,53 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		parser = new JSONParser();
 		existeVisitante = false;
 		this.VISITANTES_FILE_NAME = "visitantes.json";
+		objectParser = null;
+
+	}
+
+	private void consultarVisitante(String cedula) {
+		// REINICIO ATRIBUTO QUE VERIFICA SI EXISTE VISITANTE
+		existeVisitante = false;
+		try (FileReader reader = new FileReader(VISITANTES_FILE_NAME)) {
+			// PARSEAR .JSON A OBJETO JAVA
+			objectParser = parser.parse(reader);
+			visitanteJSONArray = (JSONArray) objectParser;
+			// BUSCAR SI YA EXISTE UN VISITANTE CON LA MISMA CÉDULA
+			for (Object object : visitanteJSONArray) {
+				visitanteJSONObject = (JSONObject) object;
+				if (visitanteJSONObject.get("cedula").equals(cedula)) {
+
+					existeVisitante = true;
+					break;
+				} else {
+					existeVisitante = false;
+				}
+
+			}
+		} catch (Exception e) {
+			existeVisitante = false;
+		}
 
 	}
 
 	public void ingresarDatosVisitante() {
-		existeVisitante = false;// REINICIO ATRIBUTO QUE VERIFICA SI EXISTE VISITANTE
 		// PEDIDO DATOS GENERALES
 		System.out.println("--------------------------------------");
 		System.out.println("MENÚ > REGISRO VISITANTE");
 
 		do {
-			// CONTROL DIGITOS CEDULA
 			do {
 				System.out.print("Ingrese su cedula (10 digitos): ");
 				cedula = cin.nextLine();
+				// CONTROL DIGITOS CEDULA
 			} while (cedula.length() != 10);
 			// CONTROL EXISTENCIA USUARIO VISITANTE
-			try (FileReader reader = new FileReader(VISITANTES_FILE_NAME)) {
-				// PARSEAR .JSON A OBJETO JAVA
-				Object obj = parser.parse(reader);
-				visitanteJSONArray = (JSONArray) obj;
-				// BUSCAR SI YA EXISTE UN VISITANTE CON LA MISMA CÉDULA
-				for (Object object : visitanteJSONArray) {
-					visitanteJSONObject = (JSONObject) object;
-					if (visitanteJSONObject.get("cedula").equals(cedula)) {
-						System.out.println("--------------------------------------");
-						System.out.println("El visitante con cédula " + cedula + " ya existe en el sistema");
-						existeVisitante = true;
-						break;
-					} else {
-						existeVisitante = false;
-					}
-				}
-			} catch (Exception e) {
-				existeVisitante = false;
+			consultarVisitante(cedula);
+			if (existeVisitante) {
+				System.out.println("--------------------------------------");
+				System.out.println("El visitante con cédula " + cedula + " ya existe en el sistema");
 			}
 		} while (existeVisitante);
-
 		// INGRESO DE DATOS GENERALES
 		this.ingresarDatosPersona();
 		// PEDIDO DATOS VISITANTE
@@ -95,7 +106,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		visitanteJSONObject.put("cedula", cedula);
 		visitanteJSONObject.put("nombre", nombre);
 		visitanteJSONObject.put("apellido", apellido);
-		visitanteJSONObject.put("genero", genero);
+		visitanteJSONObject.put("genero", Character.toString(genero));
 		visitanteJSONObject.put("nacionalidad", nacionalidad);
 		visitanteJSONObject.put("edad", edad);
 		visitanteJSONObject.put("año nacimiento", anioNacimiento);
@@ -132,7 +143,17 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 	}
 
 	public void reservarVisita() {
-		System.out.println("FALTA IMPLEMENTAR");
+		do {
+			System.out.print("Ingrese su cedula (10 digitos): ");
+			cedula = cin.nextLine();
+			// CONTROL DIGITOS CEDULA
+		} while (cedula.length() != 10);
+		// CONTROL EXISTENCIA USUARIO VISITANTE
+		consultarVisitante(cedula);
+		if (!existeVisitante) {
+			System.out.println("--------------------------------------");
+			System.out.println("La cédula ingresada no existe en el sistema");
+		}
 	}
 
 	// IMPLEMENTACIÓN MÉTODO POLIMORFISMO DE CLASE PADRE PERSONA

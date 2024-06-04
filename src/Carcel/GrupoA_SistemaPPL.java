@@ -1,5 +1,6 @@
 package Carcel;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;//INGRESO DE DATOS POR TECLADO
 
 public class GrupoA_SistemaPPL {
@@ -33,39 +34,45 @@ public class GrupoA_SistemaPPL {
 	public void mostrarMenu() {
 		// BUCLE QUE CIERRA SOLO CON OPCIÓN 4 (SALIR)
 		do {
-			System.out.println("--------------------------------------");
-			System.out.println("SISTEMA CARCELARIO (PPL)");
-			System.out.println("1. Consultar PPL");
-			System.out.println("2. Registrar visita");
-			System.out.println("3. Reservar Visita");
-			System.out.println("4. Salir");
-			System.out.print("Ingresa una opción (1-4): ");
-			opMenu = cin.nextInt();
+			try {
+				System.out.println("--------------------------------------");
+				System.out.println("SISTEMA CARCELARIO (PPL)");
+				System.out.println("1. Consultar PPL");
+				System.out.println("2. Registrar visita");
+				System.out.println("3. Reservar Visita");
+				System.out.println("4. Salir");
+				System.out.print("Ingresa una opción (1-4): ");
+				opMenu = cin.nextInt();
 
-			switch (opMenu) {
-			case 1: {
-				ppl.consultarDatosPPL();
-				break;
-			}
-			case 2: {
-				visitante.ingresarDatosVisitante();
-				break;
-			}
-			case 3: {
-				visitante.reservarVisita();
-				break;
-			}
-			case 4: {
-				System.out.println("Vuelve pronto, saliste del sistema");
-				break;
-			}
-			default: {
-				System.out.println("Opción inválida (1-4)");
-				break;
-			}
+				switch (opMenu) {
+				case 1: {
+					ppl.consultarDatosPPL();
+					break;
+				}
+				case 2: {
+					visitante.ingresarDatosVisitante();
+					break;
+				}
+				case 3: {
+					visitante.reservarVisita();
+					break;
+				}
+				case 4: {
+					System.out.println("Vuelve pronto, saliste del sistema");
+					break;
+				}
+				default: {
+					System.out.println("Opción inválida (1-4)");
+					break;
+				}
+				}
+				// CONTROL SI USUARIO INGRESA CADENA EN LUGAR DE VALOR NUMERICO
+			} catch (InputMismatchException e) {
+				cin = new Scanner(System.in);
 			}
 		} while (opMenu != 4);
-		cin.close();// CERRAR SCANNER AL FINALIZAR PARA QUE NO CONSUMA RECURSOS
+		// CERRAR SCANNER AL FINALIZAR PARA QUE NO CONSUMA RECURSOS
+		cin.close();
 	}
 
 }

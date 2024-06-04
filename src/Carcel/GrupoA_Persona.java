@@ -1,6 +1,7 @@
 package Carcel;
 
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.Scanner;//INGRESO DE DATOS POR TECLADO
 
 public abstract class GrupoA_Persona {
@@ -51,8 +52,12 @@ public abstract class GrupoA_Persona {
 		nacionalidad = cin.nextLine();
 		// CONTROL AÑO DE NACIMIENTO
 		do {
-			System.out.print("Ingrese su año de nacimiento (1950-2006): ");
-			anioNacimiento = cin.nextInt();
+			try {
+				System.out.print("Ingrese su año de nacimiento (1950-2006): ");
+				anioNacimiento = cin.nextInt();
+			} catch (InputMismatchException e) {
+				cin = new Scanner(System.in);
+			}
 		} while (anioNacimiento < 1950 || anioNacimiento > 2006);
 		// CALCULO AUTOMATICO DE EDAD
 		edad = fechaActual.getYear() - anioNacimiento;
