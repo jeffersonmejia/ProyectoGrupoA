@@ -1,6 +1,7 @@
 package Carcel;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,36 +18,47 @@ import org.json.simple.parser.ParseException;
 public class GrupoA_Visitante extends GrupoA_Persona {
 	// DECLARACIÓN ATRIBUTO
 	private String visitanteId, relacionPreso, motivoVisita, duracionVisita, fechaVisita, VISITANTES_FILE_NAME,
-			HORARIOS_FILE_NAME, lineReader;;
+			HORARIOS_FILE_NAME, VISITAS_FILE_NAME, lineReader;;
 	private JSONObject visitanteJSONObject;
 	private JSONArray visitanteJSONArray;
+	private JSONArray pplJSONArray;
 	private JSONParser parser;
-	private boolean existeVisitante;
+	private boolean existeVisitante, esCedulaPPL;
 	private Object objectParser;
 	private GrupoA_PPL ppl;
 	private int horarioId;
+	private FileWriter writer;
+	private File file;
 
 	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, char genero,
 			String nacionalidad, int edad, int anioNacimiento, String relacionPreso, String motivoVisita,
 			String duracionVisita, String fechaVisita, GrupoA_PPL ppl) {
 		// ASIGNACIÓN VALORES DE ATRIBUTOS HEREDADOS
 		super(cedula, nombre, apellido, genero, nacionalidad, edad, anioNacimiento);
+		// ASIGNACIÓN VALORES ATRIBUTOS PROPIOS
 		this.visitanteId = visitanteId;
 		this.relacionPreso = relacionPreso;
 		this.motivoVisita = motivoVisita;
 		this.duracionVisita = duracionVisita;
 		this.fechaVisita = fechaVisita;
 		this.ppl = ppl;
+		// LECTURA & ESCRITURA .JSON
 		this.visitanteJSONObject = new JSONObject();
 		this.visitanteJSONArray = new JSONArray();
 		this.parser = new JSONParser();
+		this.objectParser = null;
 		this.existeVisitante = false;
+		this.esCedulaPPL = false;
+		horarioId = 0;
+		// ESCRITURA & LECTURA CSV
+		writer = null;
+		file = null;
+		this.lineReader = "";
+		// NOMENCLATURA ARCHIVOS
 		this.VISITANTES_FILE_NAME = "visitantes.json";
 		this.HORARIOS_FILE_NAME = "horarios.csv";
-		this.objectParser = null;
-		this.lineReader = "";
-		horarioId = 0;
-
+		this.VISITAS_FILE_NAME = "visitas.csv";
+		pplJSONArray = new JSONArray();
 	}
 
 	private void consultarVisitante(String cedula) {
@@ -72,6 +84,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 	}
 
 	public void ingresarDatosVisitante() {
+		esCedulaPPL = false;
 		// PEDIDO DATOS GENERALES
 		System.out.println("--------------------------------------");
 		System.out.println("MENÚ > REGISRO VISITANTE");
@@ -87,7 +100,31 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 				System.out.println("--------------------------------------");
 				System.out.println("El visitante con cédula " + cedula + " ya existe en el sistema");
 			}
-		} while (existeVisitante);
+			// VERIFICA QUE CÉDULA NO ESTÉ REGISTRADA COMO PPL
+			try (FileReader reader = new FileReader("PPL.json")) {
+				// OBTIENE DATOS DEL JSON
+				Object objectParser = parser.parse(reader);
+				// PARSEA JSON A OBJETO
+				if (objectParser instanceof JSONObject) {
+					pplJSONArray.add((JSONObject) objectParser);
+				} else if (objectParser instanceof JSONArray) {
+					pplJSONArray = (JSONArray) objectParser;
+				}
+				// LEE JSON
+				for (Object obj : pplJSONArray) {
+					JSONObject jsonObj = (JSONObject) obj;
+					ppl.cedula = (String) jsonObj.get("cedula");
+					if (cedula.equals(ppl.cedula)) {
+						System.out.println("La cédula ingresada está registrada como PPL");
+						esCedulaPPL = true;
+						break;
+					}
+				}
+			} catch (IOException | ParseException e) {
+				System.out.println("No se ha podido acceder a los datos de PPLs");
+			}
+			// REPITE PROCESO SI EXISTE VISITANTE
+		} while (existeVisitante || esCedulaPPL);
 		// INGRESO DE DATOS GENERALES
 		this.ingresarDatosPersona();
 		// PEDIDO DATOS VISITANTE
@@ -163,7 +200,6 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 			System.out.println("La cédula ingresada no existe en el sistema");
 			// SI EXISTE, SELECCIONA HORARIO
 		} else if (ppl.consultarDatosPPL()) {
-
 			// LEE HORARIOS.CSV
 			try (BufferedReader reader = new BufferedReader(new FileReader(HORARIOS_FILE_NAME))) {
 				System.out.println("--------------------------------------");
@@ -190,7 +226,24 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 					cin = new Scanner(System.in);
 				}
 			} while (horarioId < 1 || horarioId > 7);
-			// crear .csv "visitas.csv"
+			// REGISTRA VISITA
+			try {
+				// CREA VISITAS.CSV
+				writer = new FileWriter(VISITAS_FILE_NAME, true); // TRUE PARA QUE ACTUALICE EL ARCHIVO
+				file = new File(VISITAS_FILE_NAME);
+				// SI NO EXISTE, CREA VISITAS.CSV
+				if (file.length() == 0) {
+					writer.append("horarioId,cedula visitante, cedula ppl\n");
+				}
+				// AGREGA HORARIOID, CEDULA VISITANTE Y PPL
+				writer.append(horarioId + "," + cedula + ", " + ppl.cedula);
+				writer.write("\n");
+				// CIERRA ESCRITOR
+				writer.close();
+				System.out.println("La visita se ha reservado correctamente");
+			} catch (IOException e) {
+				System.err.println("La visita no ha sido reservada");
+			}
 		}
 	}
 
