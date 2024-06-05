@@ -1,13 +1,9 @@
 package Carcel;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,18 +13,14 @@ import org.json.simple.parser.ParseException;
 //HEREDA CLASE PERSONA
 public class GrupoA_Visitante extends GrupoA_Persona {
 	// DECLARACIÓN ATRIBUTO
-	private String visitanteId, relacionPreso, motivoVisita, duracionVisita, fechaVisita, VISITANTES_FILE_NAME,
-			HORARIOS_FILE_NAME, VISITAS_FILE_NAME, lineReader;;
+	private String visitanteId, relacionPreso, motivoVisita, duracionVisita, fechaVisita, VISITANTES_FILE_NAME;
 	private JSONObject visitanteJSONObject;
 	private JSONArray visitanteJSONArray;
 	private JSONArray pplJSONArray;
 	private JSONParser parser;
-	private boolean existeVisitante, esCedulaPPL;
+	public boolean existeVisitante, esCedulaPPL;
 	private Object objectParser;
 	private GrupoA_PPL ppl;
-	private int horarioId;
-	private FileWriter writer;
-	private File file;
 
 	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, char genero,
 			String nacionalidad, int edad, int anioNacimiento, String relacionPreso, String motivoVisita,
@@ -49,19 +41,13 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		this.objectParser = null;
 		this.existeVisitante = false;
 		this.esCedulaPPL = false;
-		horarioId = 0;
-		// ESCRITURA & LECTURA CSV
-		writer = null;
-		file = null;
-		this.lineReader = "";
 		// NOMENCLATURA ARCHIVOS
 		this.VISITANTES_FILE_NAME = "visitantes.json";
-		this.HORARIOS_FILE_NAME = "horarios.csv";
-		this.VISITAS_FILE_NAME = "visitas.csv";
+
 		pplJSONArray = new JSONArray();
 	}
 
-	private void consultarVisitante(String cedula) {
+	public void consultarVisitante(String cedula) {
 		// REINICIO ATRIBUTO QUE VERIFICA SI EXISTE VISITANTE
 		existeVisitante = false;
 		try (FileReader reader = new FileReader(VISITANTES_FILE_NAME)) {
@@ -182,68 +168,6 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		} catch (Exception e) { //
 			// IMPRIME ERRORES SI NO GUARDA EL ARCHIVO
 			System.out.println("El archivo no existe, se creara uno nuevo");
-		}
-	}
-
-	public void reservarVisita() {
-		System.out.println("--------------------------------------");
-		System.out.println("DATOS VISITANTE");
-		do {
-			System.out.print("Ingrese su cedula (10 digitos): ");
-			cedula = cin.nextLine();
-			// CONTROLA DIGITOS CEDULA
-		} while (cedula.length() != 10);
-		// CONTROLA EXISTENCIA USUARIO VISITANTE
-		consultarVisitante(cedula);
-		if (!existeVisitante) {
-			System.out.println("--------------------------------------");
-			System.out.println("La cédula ingresada no existe en el sistema");
-			// SI EXISTE, SELECCIONA HORARIO
-		} else if (ppl.consultarDatosPPL()) {
-			// LEE HORARIOS.CSV
-			try (BufferedReader reader = new BufferedReader(new FileReader(HORARIOS_FILE_NAME))) {
-				System.out.println("--------------------------------------");
-				System.out.println("HORARIOS DISPONIBLES:");
-				// LEE LÍNEA A LÍNEA ARCHIVO
-				while ((lineReader = reader.readLine()) != null) {
-					// SEPARA ELEMENTOS ","
-					String[] values = lineReader.split(",");
-					// FORMATEA VALORES CSV
-					System.out.println(String.join(" | ", values));
-				}
-				// SI NO EXISTEN HORARIO DISPONIBLES, REGRESA MENÚ PRINCIPAL
-			} catch (IOException e) {
-				System.err.println("Lo sentimos, no existen horarios disponibles");
-			}
-			// INGRESA HORARIO ID
-			do {
-				try {
-					System.out.println("--------------------------------------");
-					System.out.println("Ingresa el ID del horario (1-7): ");
-					horarioId = cin.nextInt();
-					// CONTROLA QUE EL USUARIO INGRESE VALOR NUMÉRICO
-				} catch (InputMismatchException e) {
-					cin = new Scanner(System.in);
-				}
-			} while (horarioId < 1 || horarioId > 7);
-			// REGISTRA VISITA
-			try {
-				// CREA VISITAS.CSV
-				writer = new FileWriter(VISITAS_FILE_NAME, true); // TRUE PARA QUE ACTUALICE EL ARCHIVO
-				file = new File(VISITAS_FILE_NAME);
-				// SI NO EXISTE, CREA VISITAS.CSV
-				if (file.length() == 0) {
-					writer.append("horarioId,cedula visitante, cedula ppl\n");
-				}
-				// AGREGA HORARIOID, CEDULA VISITANTE Y PPL
-				writer.append(horarioId + "," + cedula + ", " + ppl.cedula);
-				writer.write("\n");
-				// CIERRA ESCRITOR
-				writer.close();
-				System.out.println("La visita se ha reservado correctamente");
-			} catch (IOException e) {
-				System.err.println("La visita no ha sido reservada");
-			}
 		}
 	}
 

@@ -17,6 +17,7 @@ public class GrupoA_PPL extends GrupoA_Persona {
 	private JSONObject pplJSONObject;
 	private JSONParser parser;
 	private Object objectParser;
+	private boolean existeEnJson;
 	Scanner cin;
 
 	public GrupoA_PPL(String presoId, String cedula, String nombre, String apellido, char genero, String nacionalidad,
@@ -34,11 +35,13 @@ public class GrupoA_PPL extends GrupoA_Persona {
 		pplJSONArray = new JSONArray();
 		pplJSONObject = new JSONObject();
 		parser = new JSONParser();// PARSE OBJETO JAVA -> JSON, O VICEVERSA
+		existeEnJson = false;
 	}
 
 	// CONSULTA DATOS PPL POR CÉDULA
 	public boolean consultarDatosPPL() {
 		pplJSONArray = new JSONArray();
+		existeEnJson = false;
 		System.out.println("--------------------------------------");
 		System.out.println("DATOS PPL");
 		do {
@@ -60,7 +63,10 @@ public class GrupoA_PPL extends GrupoA_Persona {
 			System.out.println("DATOS PPL");
 			// CONVERSIÓN JSON A ARRAY
 			mostrarDatos();
-			return true;
+			if (!existeEnJson) {
+				System.out.println("El PPL con cédula " + cedula + " no está en el sistema");
+			}
+			return existeEnJson;
 			// MANEJO DE ERRORES EN CASO QUE NO EXISTAA JSON
 		} catch (IOException | ParseException e) {
 			System.out.println("El PPL con cédula " + cedula + " no existe");
@@ -87,11 +93,10 @@ public class GrupoA_PPL extends GrupoA_Persona {
 				System.out.println("Duracion Condena: " + pplJSONObject.get("duracionCondena") + " años");
 				System.out.println("Tiempo cumplido condena: " + pplJSONObject.get("tiempoCumplido") + " años");
 				System.out.println("Delito: " + pplJSONObject.get("delito"));
-				break;// ROMPE CICLO
-			} else {
-				System.out.println("El PPL con cédula " + cedula + " no está en el sistema");
-				break;// ROMPE CICLO
+				existeEnJson = true;
 			}
 		}
+
 	}
+
 }

@@ -1,8 +1,8 @@
 ID,dia     ,inicio,fin,  area
-1,Lunes    ,09:00 ,11:00,Zona A
-2,Martes   ,14:00 ,16:00,Zona B
-3,Miércoles,09:00 ,11:00,Zona A
-4,Jueves   ,14:00 ,16:00,Zona B
-5,Viernes  ,09:00 ,11:00,Zona D
-6,Sábado   ,10:00 ,12:00,Zona C
-7,Domingo  ,10:00 ,12:00,Zona C
+1,Lunes    ,09:00 ,09:30,Zona A
+2,Martes   ,14:00 ,14:30,Zona B
+3,Miércoles,10:00 ,10:30,Zona A
+4,Jueves   ,15:00 ,15:30,Zona B
+5,Viernes  ,07:00 ,07:30,Zona D
+6,Sábado   ,11:00 ,11:30,Zona C
+7,Domingo  ,13:00 ,13:30,Zona C
