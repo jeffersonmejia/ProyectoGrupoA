@@ -3,7 +3,6 @@ package Carcel;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,13 +12,14 @@ import org.json.simple.parser.ParseException;
 //HEREDA CLASE PERSONA
 public class GrupoA_Visitante extends GrupoA_Persona {
 	// DECLARACIÓN ATRIBUTO
-	private String visitanteId, relacionPreso, motivoVisita, duracionVisita, fechaVisita, VISITANTES_FILE_NAME;
+	private String visitanteId, relacionPreso, motivoVisita, VISITANTES_FILE_NAME;
 	private JSONObject visitanteJSONObject;
 	private JSONArray visitanteJSONArray;
 	private JSONArray pplJSONArray;
 	private JSONParser parser;
 	public boolean existeVisitante, esCedulaPPL;
 	private Object objectParser;
+
 	private GrupoA_PPL ppl;
 
 	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, char genero,
@@ -31,8 +31,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		this.visitanteId = visitanteId;
 		this.relacionPreso = relacionPreso;
 		this.motivoVisita = motivoVisita;
-		this.duracionVisita = duracionVisita;
-		this.fechaVisita = fechaVisita;
+
 		this.ppl = ppl;
 		// LECTURA & ESCRITURA .JSON
 		this.visitanteJSONObject = new JSONObject();
@@ -44,7 +43,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		// NOMENCLATURA ARCHIVOS
 		this.VISITANTES_FILE_NAME = "visitantes.json";
 
-		pplJSONArray = new JSONArray();
+		this.pplJSONArray = new JSONArray();
 	}
 
 	public void consultarVisitante(String cedula) {
@@ -118,9 +117,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		relacionPreso = cin.nextLine();
 		System.out.print("Motivo de la Visita: ");
 		motivoVisita = cin.nextLine();
-		System.out.print("Duracion de su visita: ");
-		duracionVisita = cin.nextLine();
-		fechaVisita = LocalDate.now().toString();
+
 		// GENERACIÓN ID ÚNICO (NOMBRE & 4 ÚLTIMOS DIGITOS CEDULA)
 		visitanteId = nombre.split("")[0] + cedula.substring(cedula.length() - 4);
 		// GUARDADO DE DATOS EN .JSON
@@ -141,8 +138,7 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		visitanteJSONObject.put("año nacimiento", anioNacimiento);
 		visitanteJSONObject.put("relacion", relacionPreso);
 		visitanteJSONObject.put("motivo visita", motivoVisita);
-		visitanteJSONObject.put("Duracion Visita", duracionVisita);
-		visitanteJSONObject.put("fecha visita", fechaVisita);
+
 		visitanteJSONArray.add(visitanteJSONObject);
 
 		// VERIFICAR SI YA EXISTEN DATOS EN EL .JSON
@@ -185,7 +181,5 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		System.out.println("Año nacimiento: " + anioNacimiento);
 		System.out.println("Relación: " + relacionPreso);
 		System.out.println("Motivo preso: " + motivoVisita);
-		System.out.println("Duración visita: " + duracionVisita);
-		System.out.println("Fecha visita: " + fechaVisita);
 	}
 }
