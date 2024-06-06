@@ -3,6 +3,7 @@ package Carcel;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -19,8 +20,8 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 	private JSONParser parser;
 	public boolean existeVisitante, esCedulaPPL;
 	private Object objectParser;
-
 	private GrupoA_PPL ppl;
+	private Scanner cin;
 
 	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, char genero,
 			String nacionalidad, int edad, int anioNacimiento, String relacionPreso, String motivoVisita,
@@ -31,7 +32,6 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		this.visitanteId = visitanteId;
 		this.relacionPreso = relacionPreso;
 		this.motivoVisita = motivoVisita;
-
 		this.ppl = ppl;
 		// LECTURA & ESCRITURA .JSON
 		this.visitanteJSONObject = new JSONObject();
@@ -42,8 +42,8 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		this.esCedulaPPL = false;
 		// NOMENCLATURA ARCHIVOS
 		this.VISITANTES_FILE_NAME = "visitantes.json";
-
 		this.pplJSONArray = new JSONArray();
+		cin = new Scanner(System.in);
 	}
 
 	public void consultarVisitante(String cedula) {

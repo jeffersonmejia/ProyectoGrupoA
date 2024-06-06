@@ -9,7 +9,7 @@ public abstract class GrupoA_Persona {
 	protected String cedula, nombre, apellido, nacionalidad;
 	protected char genero;
 	protected int edad, anioNacimiento;
-	protected Scanner cin;// PROTECTED PARA REUTILIZAR SCANNER EN CLASES HIJAS
+	private Scanner cin;// PROTECTED PARA REUTILIZAR SCANNER EN CLASES HIJAS
 	private LocalDate fechaActual;
 
 	public GrupoA_Persona(String cedula, String nombre, String apellido, char genero, String nacionalidad, int edad,
