@@ -9,7 +9,7 @@ import java.util.Scanner;//INGRESO DE DATOS POR TECLADO
 
 public class GrupoA_SistemaPPL {
 	// DECLARACIÓN ATRIBUTOS
-	Scanner cin;
+	private Scanner cin;
 	private int opMenu, horarioId;
 	private String VISITAS_FILE_NAME;
 	private GrupoA_PPL ppl;

@@ -11,14 +11,13 @@ import org.json.simple.parser.ParseException;//MANEJO ERRORES JSON
 
 public class GrupoA_PPL extends GrupoA_Persona {
 	private int duracionCondena, tiempoCumplido;
-	private String presoId;
-	private String delito, fechaIngreso;
+	private String presoId, delito, fechaIngreso;
 	private JSONArray pplJSONArray;
 	private JSONObject pplJSONObject;
 	private JSONParser parser;
 	private Object objectParser;
 	private boolean existeEnJson;
-	Scanner cin;
+	private Scanner cin;
 
 	public GrupoA_PPL(String presoId, String cedula, String nombre, String apellido, char genero, String nacionalidad,
 			int edad, int anioNacimiento, int duracionCondena, int tiempoCumplido, String delito, String fechaIngreso) {
