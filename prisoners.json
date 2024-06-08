@@ -1,0 +1,44 @@
+[
+    {
+      "dni": "1317268875",
+      "name": "Juan",
+      "lastName": "Pérez",
+      "gender": "Masculino",
+      "nationality": "Mexicana",
+      "age": 30,
+      "yearBorn": 1994,
+      "prisonerId": "P123",
+      "durationJail": 10,
+      "timeRemaining": 5,
+      "penality": "Robo",
+      "dateEntry": "2019-01-15"
+    },
+    {
+      "dni": "1308772910",
+      "name": "María",
+      "lastName": "González",
+      "gender": "Femenino",
+      "nationality": "Ecuatoriana",
+      "age": 40,
+      "yearBorn": 1984,
+      "prisonerId": "P456",
+      "durationJail": 15,
+      "timeRemaining": 10,
+      "penality": "Fraude",
+      "dateEntry": "2014-03-22"
+    },
+    {
+      "dni": "1309112447",
+      "name": "Carlos",
+      "lastName": "López",
+      "gender": "Masculino",
+      "nationality": "Argentina",
+      "age": 35,
+      "yearBorn": 1989,
+      "prisonerId": "P789",
+      "durationJail": 8,
+      "timeRemaining": 3,
+      "penality": "Asalto",
+      "dateEntry": "2021-07-11"
+    }
+  ]

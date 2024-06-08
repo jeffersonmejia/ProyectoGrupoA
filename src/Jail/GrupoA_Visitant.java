@@ -1,4 +1,4 @@
-package Carcel;
+package Jail;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,45 +11,45 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 //HEREDA CLASE PERSONA
-public class GrupoA_Visitante extends GrupoA_Persona {
+public class GrupoA_Visitant extends GrupoA_Person {
 	// DECLARACIÓN ATRIBUTO
-	private String visitanteId, relacionPreso, motivoVisita, VISITANTES_FILE_NAME;
+	private String visitantId, relationPrisoner, reasonVisita, VISITANTS_FILE_NAME;
 	private JSONObject visitanteJSONObject;
 	private JSONArray visitanteJSONArray;
 	private JSONArray pplJSONArray;
 	private JSONParser parser;
-	public boolean existeVisitante, esCedulaPPL;
+	public boolean visitantExist, isDniPrisoner;
 	private Object objectParser;
-	private GrupoA_PPL ppl;
+	private GrupoA_Prisoner prisoner;
 	private Scanner cin;
 
-	public GrupoA_Visitante(String visitanteId, String cedula, String nombre, String apellido, char genero,
-			String nacionalidad, int edad, int anioNacimiento, String relacionPreso, String motivoVisita,
-			String duracionVisita, String fechaVisita, GrupoA_PPL ppl) {
+	public GrupoA_Visitant(String visitantId, String dni, String name, String lastName, char gender,
+			String nationality, int age, int yearBorn, String relationPrisoner, String reasonVisita,
+			GrupoA_Prisoner prisoner) {
 		// ASIGNACIÓN VALORES DE ATRIBUTOS HEREDADOS
-		super(cedula, nombre, apellido, genero, nacionalidad, edad, anioNacimiento);
+		super(dni, name, lastName, gender, nationality, age, yearBorn);
 		// ASIGNACIÓN VALORES ATRIBUTOS PROPIOS
-		this.visitanteId = visitanteId;
-		this.relacionPreso = relacionPreso;
-		this.motivoVisita = motivoVisita;
-		this.ppl = ppl;
+		this.visitantId = visitantId;
+		this.relationPrisoner = relationPrisoner;
+		this.reasonVisita = reasonVisita;
+		this.prisoner = prisoner;
 		// LECTURA & ESCRITURA .JSON
 		this.visitanteJSONObject = new JSONObject();
 		this.visitanteJSONArray = new JSONArray();
 		this.parser = new JSONParser();
 		this.objectParser = null;
-		this.existeVisitante = false;
-		this.esCedulaPPL = false;
+		this.visitantExist = false;
+		this.isDniPrisoner = false;
 		// NOMENCLATURA ARCHIVOS
-		this.VISITANTES_FILE_NAME = "visitantes.json";
+		this.VISITANTS_FILE_NAME = "visitants.json";
 		this.pplJSONArray = new JSONArray();
 		cin = new Scanner(System.in);
 	}
 
 	public void consultarVisitante(String cedula) {
 		// REINICIO ATRIBUTO QUE VERIFICA SI EXISTE VISITANTE
-		existeVisitante = false;
-		try (FileReader reader = new FileReader(VISITANTES_FILE_NAME)) {
+		visitantExist = false;
+		try (FileReader reader = new FileReader(VISITANTS_FILE_NAME)) {
 			// PARSEAR .JSON A OBJETO JAVA
 			objectParser = parser.parse(reader);
 			visitanteJSONArray = (JSONArray) objectParser;
@@ -57,36 +57,36 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 			for (Object object : visitanteJSONArray) {
 				visitanteJSONObject = (JSONObject) object;
 				if (visitanteJSONObject.get("cedula").equals(cedula)) {
-					existeVisitante = true;
+					visitantExist = true;
 					break;
 				} else {
-					existeVisitante = false;
+					visitantExist = false;
 				}
 			}
 		} catch (Exception e) {
-			existeVisitante = false;
+			visitantExist = false;
 		}
 	}
 
 	public void ingresarDatosVisitante() {
-		esCedulaPPL = false;
+		isDniPrisoner = false;
 		// PEDIDO DATOS GENERALES
 		System.out.println("--------------------------------------");
 		System.out.println("MENÚ > REGISRO VISITANTE");
 		do {
 			do {
 				System.out.print("Ingrese su cedula (10 digitos): ");
-				cedula = cin.nextLine();
+				dni = cin.nextLine();
 				// CONTROL DIGITOS CEDULA
-			} while (cedula.length() != 10);
+			} while (dni.length() != 10);
 			// CONTROL EXISTENCIA USUARIO VISITANTE
-			consultarVisitante(cedula);
-			if (existeVisitante) {
+			consultarVisitante(dni);
+			if (visitantExist) {
 				System.out.println("--------------------------------------");
-				System.out.println("El visitante con cédula " + cedula + " ya existe en el sistema");
+				System.out.println("El visitante con cédula " + dni + " ya existe en el sistema");
 			}
 			// VERIFICA QUE CÉDULA NO ESTÉ REGISTRADA COMO PPL
-			try (FileReader reader = new FileReader("PPL.json")) {
+			try (FileReader reader = new FileReader("prisoners.json")) {
 				// OBTIENE DATOS DEL JSON
 				Object objectParser = parser.parse(reader);
 				// PARSEA JSON A OBJETO
@@ -98,10 +98,10 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 				// LEE JSON
 				for (Object obj : pplJSONArray) {
 					JSONObject jsonObj = (JSONObject) obj;
-					ppl.cedula = (String) jsonObj.get("cedula");
-					if (cedula.equals(ppl.cedula)) {
+					prisoner.dni = (String) jsonObj.get("dni");
+					if (dni.equals(prisoner.dni)) {
 						System.out.println("La cédula ingresada está registrada como PPL");
-						esCedulaPPL = true;
+						isDniPrisoner = true;
 						break;
 					}
 				}
@@ -109,17 +109,17 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 				System.out.println("No se ha podido acceder a los datos de PPLs");
 			}
 			// REPITE PROCESO SI EXISTE VISITANTE
-		} while (existeVisitante || esCedulaPPL);
+		} while (visitantExist || isDniPrisoner);
 		// INGRESO DE DATOS GENERALES
-		this.ingresarDatosPersona();
+		this.getDataPerson();
 		// PEDIDO DATOS VISITANTE
 		System.out.print("Relacion con PPL: ");
-		relacionPreso = cin.nextLine();
+		relationPrisoner = cin.nextLine();
 		System.out.print("Motivo de la Visita: ");
-		motivoVisita = cin.nextLine();
+		reasonVisita = cin.nextLine();
 
 		// GENERACIÓN ID ÚNICO (NOMBRE & 4 ÚLTIMOS DIGITOS CEDULA)
-		visitanteId = nombre.split("")[0] + cedula.substring(cedula.length() - 4);
+		visitantId = name.split("")[0] + dni.substring(dni.length() - 4);
 		// GUARDADO DE DATOS EN .JSON
 		this.guardarDatosVisitante();
 	}
@@ -128,22 +128,22 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		// INICIALIZACIÓN OBJETO
 		visitanteJSONObject = new JSONObject();
 		// GUARDADO FORMATO JSON
-		visitanteJSONObject.put("visitante ID", visitanteId);
-		visitanteJSONObject.put("cedula", cedula);
-		visitanteJSONObject.put("nombre", nombre);
-		visitanteJSONObject.put("apellido", apellido);
-		visitanteJSONObject.put("genero", Character.toString(genero));
-		visitanteJSONObject.put("nacionalidad", nacionalidad);
-		visitanteJSONObject.put("edad", edad);
-		visitanteJSONObject.put("año nacimiento", anioNacimiento);
-		visitanteJSONObject.put("relacion", relacionPreso);
-		visitanteJSONObject.put("motivo visita", motivoVisita);
+		visitanteJSONObject.put("visitante ID", visitantId);
+		visitanteJSONObject.put("cedula", dni);
+		visitanteJSONObject.put("nombre", name);
+		visitanteJSONObject.put("apellido", lastName);
+		visitanteJSONObject.put("genero", Character.toString(gender));
+		visitanteJSONObject.put("nacionalidad", nationality);
+		visitanteJSONObject.put("edad", age);
+		visitanteJSONObject.put("año nacimiento", yearBorn);
+		visitanteJSONObject.put("relacion", relationPrisoner);
+		visitanteJSONObject.put("motivo visita", reasonVisita);
 
 		visitanteJSONArray.add(visitanteJSONObject);
 
 		// VERIFICAR SI YA EXISTEN DATOS EN EL .JSON
 		JSONParser jsonParser = new JSONParser();
-		try (FileReader reader = new FileReader(VISITANTES_FILE_NAME)) {
+		try (FileReader reader = new FileReader(VISITANTS_FILE_NAME)) {
 			// PARSEAR .JSON A OBJETO JAVA
 			Object obj = jsonParser.parse(reader);
 			visitanteJSONArray = (JSONArray) obj;
@@ -155,12 +155,12 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 		}
 
 		// GUARDA DATOS DEL .JSON
-		try (FileWriter file = new FileWriter(VISITANTES_FILE_NAME)) {
+		try (FileWriter file = new FileWriter(VISITANTS_FILE_NAME)) {
 			// ESCRITURA JSON
 			file.write(visitanteJSONArray.toJSONString());
 			// LIMPIAR BUFFER ARCHIVO
 			file.flush();
-			mostrarDatos();
+			showData();
 		} catch (Exception e) { //
 			// IMPRIME ERRORES SI NO GUARDA EL ARCHIVO
 			System.out.println("El archivo no existe, se creara uno nuevo");
@@ -169,17 +169,17 @@ public class GrupoA_Visitante extends GrupoA_Persona {
 
 	// IMPLEMENTACIÓN MÉTODO POLIMORFISMO DE CLASE PADRE PERSONA
 	@Override
-	public void mostrarDatos() {
+	public void showData() {
 		System.out.println("--------------------------------------");
 		System.out.println("REGISTRO ÉXITOSO - DATOS");
-		System.out.println("Cédula: " + cedula);
-		System.out.println("Nombre: " + nombre);
-		System.out.println("Apellido: " + apellido);
-		System.out.println("Género: " + genero);
-		System.out.println("Nacionalidad: " + nacionalidad);
-		System.out.println("Edad: " + edad + " años");
-		System.out.println("Año nacimiento: " + anioNacimiento);
-		System.out.println("Relación: " + relacionPreso);
-		System.out.println("Motivo preso: " + motivoVisita);
+		System.out.println("Cédula: " + dni);
+		System.out.println("Nombre: " + name);
+		System.out.println("Apellido: " + lastName);
+		System.out.println("Género: " + gender);
+		System.out.println("Nacionalidad: " + nationality);
+		System.out.println("Edad: " + age + " años");
+		System.out.println("Año nacimiento: " + yearBorn);
+		System.out.println("Relación: " + relationPrisoner);
+		System.out.println("Motivo preso: " + reasonVisita);
 	}
 }
