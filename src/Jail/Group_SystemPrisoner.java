@@ -1,4 +1,4 @@
-package Carcel;
+package Jail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -7,83 +7,83 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;//INGRESO DE DATOS POR TECLADO
 
-public class GrupoA_SistemaPPL {
+public class Group_SystemPrisoner {
 	// DECLARACIÓN ATRIBUTOS
 	private Scanner cin;
-	private int opMenu, horarioId;
+	private int opMenu, scheduleId;
 	private String VISITAS_FILE_NAME;
-	private GrupoA_PPL ppl;
-	private GrupoA_Visitante visitante;
-	private boolean existePPL;
+	private GroupA_Prisoner prisoner;
+	private GroupA_Visitant visitant;
+	private boolean prisonerExists;
 	private FileWriter writer;
 	private File file;
-	private ArrayList<String> horariosVisita;
+	private ArrayList<String> scheduleVisit;
 
-	public GrupoA_SistemaPPL(String tramiteId, int opMenu, String[] horarios, String estadoVisita) {
+	public Group_SystemPrisoner(String tramiteId, int opMenu, String[] horarios, String estadoVisita) {
 		// INICIALIZACIÓN DE ATRIBUTOS
 		this.opMenu = opMenu;
-		this.ppl = new GrupoA_PPL("", "", "", "", '0', "", 0, 0, 0, 0, "", "");
-		this.visitante = new GrupoA_Visitante("", "", "", "", '0', "", 0, 0, "", "", "", "", ppl);
+		this.prisoner = new GroupA_Prisoner("", "", "", '0', "", 0, 0, "", "", "", 0, 0);
+		this.visitant = new GroupA_Visitant("", "", "", "", '0', "", 0, 0, "", "", prisoner);
 		this.cin = new Scanner(System.in);// PARA INGRESO DE DATOS POR TECLADO
-		this.VISITAS_FILE_NAME = "visitas.csv";
-		this.horarioId = 0;
+		this.VISITAS_FILE_NAME = "visits.csv";
+		this.scheduleId = 0;
 		this.writer = null;
 		this.file = null;
-		this.existePPL = false;
-		this.horariosVisita = new ArrayList<>();
+		this.prisonerExists = false;
+		this.scheduleVisit = new ArrayList<>();
 	}
 
-	public void cargarHorarios() {
+	public void loadSchedule() {
 		// GENERA ESTÁTICAMENTE EL HORARIO DE VISITA USANDO ARRAYLIST
-		horariosVisita.add("ID | fecha     | hora        | lugar");
-		horariosVisita.add("1  | 20/6/2024 | 09:00 - 9:30  | Zona A");
-		horariosVisita.add("2  | 21/6/2024 | 10:00 - 10:30 | Zona B");
-		horariosVisita.add("3  | 22/6/2024 | 11:00 - 11:30 | Zona A");
-		horariosVisita.add("4  | 23/6/2024 | 15:00 - 15:30 | Zona B");
-		horariosVisita.add("5  | 24/6/2024 | 07:00 - 07:30 | Zona D");
-		horariosVisita.add("6  | 25/6/2024 | 11:00 - 11:30 | Zona C");
-		horariosVisita.add("7  | 26/6/2024 | 13:00 - 13:30 | Zona C");
+		scheduleVisit.add("ID | fecha     | hora        | lugar");
+		scheduleVisit.add("1  | 20/6/2024 | 09:00 - 9:30  | Zona A");
+		scheduleVisit.add("2  | 21/6/2024 | 10:00 - 10:30 | Zona B");
+		scheduleVisit.add("3  | 22/6/2024 | 11:00 - 11:30 | Zona A");
+		scheduleVisit.add("4  | 23/6/2024 | 15:00 - 15:30 | Zona B");
+		scheduleVisit.add("5  | 24/6/2024 | 07:00 - 07:30 | Zona D");
+		scheduleVisit.add("6  | 25/6/2024 | 11:00 - 11:30 | Zona C");
+		scheduleVisit.add("7  | 26/6/2024 | 13:00 - 13:30 | Zona C");
 		// LEE HORARIOS EN EL ARRAY LIST
 		System.out.println("--------------------------------------");
 		System.out.println("HORARIOS DISPONIBLES");
-		for (int i = 0; i < horariosVisita.size(); i++) {
-			System.out.println(horariosVisita.get(i));
+		for (int i = 0; i < scheduleVisit.size(); i++) {
+			System.out.println(scheduleVisit.get(i));
 		}
 		System.out.println("--------------------------------------");
 	}
 
-	public void reservarVisita() {
+	public void reserveVisit() {
 		cin = new Scanner(System.in);
-		existePPL = false;
+		prisonerExists = false;// INICIALIZA VARIABLE QUE REVISA SI EXISTE PRISIONERO
 		System.out.println("--------------------------------------");
 		System.out.println("DATOS VISITANTE");
 		do {
 			System.out.print("Ingrese su cedula (10 digitos): ");
-			visitante.cedula = cin.nextLine();
+			visitant.dni = cin.nextLine();
 			// CONTROLA DIGITOS CEDULA
-		} while (visitante.cedula.length() != 10);
+		} while (visitant.dni.length() != 10);
 		// CONTROLA EXISTENCIA USUARIO VISITANTE
-		visitante.consultarVisitante(visitante.cedula);
-		if (!visitante.existeVisitante) {
+		visitant.queryVisitant(visitant.dni);
+		if (!visitant.visitantExist) {
 			System.out.println("--------------------------------------");
 			System.out.println("La cédula ingresada no existe en el sistema");
 			// SI EXISTE, SELECCIONA HORARIO
 		}
-		existePPL = ppl.consultarDatosPPL();
-		if (existePPL) {
+		prisonerExists = prisoner.consultarDatosPPL();
+		if (prisonerExists) {
 			// LEE HORARIOS DISPONIBLES
-			cargarHorarios();
+			loadSchedule();
 			// INGRESA HORARIO ID
 			do {
 				try {
 					System.out.println("--------------------------------------");
 					System.out.println("Ingresa el ID del horario (1-7): ");
-					horarioId = cin.nextInt();
+					scheduleId = cin.nextInt();
 					// CONTROLA QUE EL USUARIO INGRESE VALOR NUMÉRICO
 				} catch (InputMismatchException e) {
 					cin = new Scanner(System.in);
 				}
-			} while (horarioId < 1 || horarioId > 7);
+			} while (scheduleId < 1 || scheduleId > 7);
 			// REGISTRA VISITA
 			try {
 				// CREA VISITAS.CSV
@@ -94,7 +94,7 @@ public class GrupoA_SistemaPPL {
 					writer.append("horarioId,cedula visitante, cedula ppl\n");
 				}
 				// AGREGA HORARIOID, CEDULA VISITANTE Y PPL
-				writer.append(horarioId + "," + visitante.cedula + ", " + ppl.cedula);
+				writer.append(scheduleId + "," + visitant.dni + ", " + prisoner.dni);
 				writer.write("\n");
 				// CIERRA ESCRITOR
 				writer.close();
@@ -105,7 +105,7 @@ public class GrupoA_SistemaPPL {
 		}
 	}
 
-	public void mostrarMenu() {
+	public void showMenu() {
 		// BUCLE QUE CIERRA SOLO CON OPCIÓN 4 (SALIR)
 		do {
 			try {
@@ -120,15 +120,15 @@ public class GrupoA_SistemaPPL {
 
 				switch (opMenu) {
 				case 1: {
-					ppl.consultarDatosPPL();
+					prisoner.consultarDatosPPL();
 					break;
 				}
 				case 2: {
-					visitante.ingresarDatosVisitante();
+					visitant.getVisitantData();
 					break;
 				}
 				case 3: {
-					this.reservarVisita();
+					this.reserveVisit();
 					break;
 				}
 				case 4: {
@@ -148,5 +148,4 @@ public class GrupoA_SistemaPPL {
 		// CERRAR SCANNER AL FINALIZAR PARA QUE NO CONSUMA RECURSOS
 		cin.close();
 	}
-
 }
