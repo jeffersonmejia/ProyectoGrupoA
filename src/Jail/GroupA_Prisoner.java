@@ -42,7 +42,7 @@ public class GroupA_Prisoner extends GroupA_Person {
 	}
 
 	// CONSULTA DATOS PPL POR CÉDULA
-	public boolean consultarDatosPPL() {
+	public boolean queryDataPrisoner() {
 		prisonerJSONArray = new JSONArray();
 		jsonExist = false;
 		System.out.println("--------------------------------------");

@@ -4,11 +4,7 @@ import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;//INGRESO DE DATOS POR TECLADO
 
-<<<<<<<< HEAD:src/Jail/GroupA_Person.java
 public abstract class GroupA_Person {
-========
-public abstract class GrupoA_Person {
->>>>>>>> b74d9fe3a492fa7d5317d561f3af1c9565cffed6:src/Jail/GrupoA_Person.java
 	// DECLARACIÓN DE ATRIBUTOS
 	protected String dni, name, lastName, nationality;
 	protected char gender;
@@ -16,11 +12,7 @@ public abstract class GrupoA_Person {
 	private Scanner cin;// PROTECTED PARA REUTILIZAR SCANNER EN CLASES HIJAS
 	private LocalDate currentYear;
 
-<<<<<<<< HEAD:src/Jail/GroupA_Person.java
 	public GroupA_Person(String dni, String name, String lastName, char gender, String nationality, int age,
-========
-	public GrupoA_Person(String dni, String name, String lastName, char gender, String nationality, int age,
->>>>>>>> b74d9fe3a492fa7d5317d561f3af1c9565cffed6:src/Jail/GrupoA_Person.java
 			int yearBorn) {
 		// INICIALIZACIÓN DE ATRIBUTOS
 		this.dni = dni;

@@ -7,51 +7,29 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;//INGRESO DE DATOS POR TECLADO
 
-<<<<<<<< HEAD:src/Jail/Group_SystemPrisoner.java
 public class Group_SystemPrisoner {
-========
-public class GrupoA_SystemPrisoner {
->>>>>>>> b74d9fe3a492fa7d5317d561f3af1c9565cffed6:src/Jail/GrupoA_SystemPrisoner.java
 	// DECLARACIÓN ATRIBUTOS
 	private Scanner cin;
 	private int opMenu, scheduleId;
-	private String VISITAS_FILE_NAME;
-<<<<<<<< HEAD:src/Jail/Group_SystemPrisoner.java
+	private String VISITS_FILE_NAME;
 	private GroupA_Prisoner prisoner;
 	private GroupA_Visitant visitant;
 	private boolean prisonerExists;
-========
-	private GrupoA_Prisoner prisoner;
-	private GrupoA_Visitant visitant;
-	private boolean existePPL;
->>>>>>>> b74d9fe3a492fa7d5317d561f3af1c9565cffed6:src/Jail/GrupoA_SystemPrisoner.java
 	private FileWriter writer;
 	private File file;
 	private ArrayList<String> scheduleVisit;
 
-<<<<<<<< HEAD:src/Jail/Group_SystemPrisoner.java
 	public Group_SystemPrisoner(String tramiteId, int opMenu, String[] horarios, String estadoVisita) {
 		// INICIALIZACIÓN DE ATRIBUTOS
 		this.opMenu = opMenu;
 		this.prisoner = new GroupA_Prisoner("", "", "", '0', "", 0, 0, "", "", "", 0, 0);
 		this.visitant = new GroupA_Visitant("", "", "", "", '0', "", 0, 0, "", "", prisoner);
-========
-	public GrupoA_SystemPrisoner(String tramiteId, int opMenu, String[] horarios, String estadoVisita) {
-		// INICIALIZACIÓN DE ATRIBUTOS
-		this.opMenu = opMenu;
-		this.prisoner = new GrupoA_Prisoner("", "", "", '0',"", 0, 0);
-		this.visitant = new GrupoA_Visitant("", "", "", "", '0', "", 0, 0, "", "", prisoner);
->>>>>>>> b74d9fe3a492fa7d5317d561f3af1c9565cffed6:src/Jail/GrupoA_SystemPrisoner.java
 		this.cin = new Scanner(System.in);// PARA INGRESO DE DATOS POR TECLADO
-		this.VISITAS_FILE_NAME = "visits.csv";
+		this.VISITS_FILE_NAME = "visits.csv";
 		this.scheduleId = 0;
 		this.writer = null;
 		this.file = null;
-<<<<<<<< HEAD:src/Jail/Group_SystemPrisoner.java
 		this.prisonerExists = false;
-========
-		this.existePPL = false;
->>>>>>>> b74d9fe3a492fa7d5317d561f3af1c9565cffed6:src/Jail/GrupoA_SystemPrisoner.java
 		this.scheduleVisit = new ArrayList<>();
 	}
 
@@ -85,23 +63,14 @@ public class GrupoA_SystemPrisoner {
 			// CONTROLA DIGITOS CEDULA
 		} while (visitant.dni.length() != 10);
 		// CONTROLA EXISTENCIA USUARIO VISITANTE
-<<<<<<<< HEAD:src/Jail/Group_SystemPrisoner.java
 		visitant.queryVisitant(visitant.dni);
-========
-		visitant.consultarVisitante(visitant.dni);
->>>>>>>> b74d9fe3a492fa7d5317d561f3af1c9565cffed6:src/Jail/GrupoA_SystemPrisoner.java
 		if (!visitant.visitantExist) {
 			System.out.println("--------------------------------------");
 			System.out.println("La cédula ingresada no existe en el sistema");
 			// SI EXISTE, SELECCIONA HORARIO
 		}
-<<<<<<<< HEAD:src/Jail/Group_SystemPrisoner.java
-		prisonerExists = prisoner.consultarDatosPPL();
+		prisonerExists = prisoner.queryDataPrisoner();
 		if (prisonerExists) {
-========
-		existePPL = prisoner.consultarDatosPPL();
-		if (existePPL) {
->>>>>>>> b74d9fe3a492fa7d5317d561f3af1c9565cffed6:src/Jail/GrupoA_SystemPrisoner.java
 			// LEE HORARIOS DISPONIBLES
 			loadSchedule();
 			// INGRESA HORARIO ID
@@ -118,8 +87,8 @@ public class GrupoA_SystemPrisoner {
 			// REGISTRA VISITA
 			try {
 				// CREA VISITAS.CSV
-				writer = new FileWriter(VISITAS_FILE_NAME, true); // TRUE PARA QUE ACTUALICE EL ARCHIVO
-				file = new File(VISITAS_FILE_NAME);
+				writer = new FileWriter(VISITS_FILE_NAME, true); // TRUE PARA QUE ACTUALICE EL ARCHIVO
+				file = new File(VISITS_FILE_NAME);
 				// SI NO EXISTE, CREA VISITAS.CSV
 				if (file.length() == 0) {
 					writer.append("horarioId,cedula visitante, cedula ppl\n");
@@ -151,15 +120,11 @@ public class GrupoA_SystemPrisoner {
 
 				switch (opMenu) {
 				case 1: {
-					prisoner.consultarDatosPPL();
+					prisoner.queryDataPrisoner();
 					break;
 				}
 				case 2: {
-<<<<<<<< HEAD:src/Jail/Group_SystemPrisoner.java
 					visitant.getVisitantData();
-========
-					visitant.ingresarDatosVisitante();
->>>>>>>> b74d9fe3a492fa7d5317d561f3af1c9565cffed6:src/Jail/GrupoA_SystemPrisoner.java
 					break;
 				}
 				case 3: {
