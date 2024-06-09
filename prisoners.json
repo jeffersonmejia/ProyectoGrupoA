@@ -2,7 +2,15 @@
     {
       "dni": "1317268875",
       "name": "Juan",
+<<<<<<< HEAD
       "lastName": "Pérez",
+=======
+<<<<<<< HEAD
+      "lastName": "Pérez",
+=======
+      "lastName": "Perez",
+>>>>>>> b74d9fe3a492fa7d5317d561f3af1c9565cffed6
+>>>>>>> 63b84514c526320e742b3e195d1a65a0c033ae84
       "gender": "Masculino",
       "nationality": "Mexicana",
       "age": 30,
