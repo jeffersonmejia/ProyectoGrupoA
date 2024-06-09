@@ -1,12 +1,8 @@
 package Jail;
 
-<<<<<<< HEAD
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-=======
-import java.io.File;
->>>>>>> 63b84514c526320e742b3e195d1a65a0c033ae84
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,17 +13,10 @@ public class Group_SystemPrisoner {
 	// DECLARACIÓN ATRIBUTOS
 	private Scanner cin;
 	private int opMenu, scheduleId;
-<<<<<<< HEAD
 	private String VISITS_FILE_NAME, lineReader;
 	private GroupA_Prisoner prisoner;
 	private GroupA_Visitant visitant;
 	private boolean prisonerExists, scheduleTaken, hasVisitsPendient;
-=======
-	private String VISITS_FILE_NAME;
-	private GroupA_Prisoner prisoner;
-	private GroupA_Visitant visitant;
-	private boolean prisonerExists;
->>>>>>> 63b84514c526320e742b3e195d1a65a0c033ae84
 	private FileWriter writer;
 	private File file;
 	private ArrayList<String> scheduleVisit;
@@ -42,14 +31,10 @@ public class Group_SystemPrisoner {
 		this.scheduleId = 0;
 		this.writer = null;
 		this.file = null;
-<<<<<<< HEAD
 		this.lineReader = "";
 		this.prisonerExists = false;
 		this.scheduleTaken = false;
 		this.hasVisitsPendient = false;
-=======
-		this.prisonerExists = false;
->>>>>>> 63b84514c526320e742b3e195d1a65a0c033ae84
 		this.scheduleVisit = new ArrayList<>();
 	}
 
@@ -75,11 +60,8 @@ public class Group_SystemPrisoner {
 	public void reserveVisit() {
 		cin = new Scanner(System.in);
 		prisonerExists = false;// INICIALIZA VARIABLE QUE REVISA SI EXISTE PRISIONERO
-<<<<<<< HEAD
 		scheduleTaken = false;// BANDERA QUE REVISA HORARIO DISPONIBLE
 		hasVisitsPendient = false;// VERIFICA QUE EL VISITANTE NO TENGA VISITAS PENDIENTES
-=======
->>>>>>> 63b84514c526320e742b3e195d1a65a0c033ae84
 		System.out.println("--------------------------------------");
 		System.out.println("DATOS VISITANTE");
 		do {
@@ -92,7 +74,6 @@ public class Group_SystemPrisoner {
 		if (!visitant.visitantExist) {
 			System.out.println("--------------------------------------");
 			System.out.println("La cédula ingresada no existe en el sistema");
-<<<<<<< HEAD
 		}
 		// VERIFICA EXISTENCIA DE VISITAS PENDIENTES DEL VISITANTE
 		try (BufferedReader reader = new BufferedReader(new FileReader(VISITS_FILE_NAME))) {
@@ -171,44 +152,6 @@ public class Group_SystemPrisoner {
 			}
 		}
 
-=======
-			// SI EXISTE, SELECCIONA HORARIO
-		}
-		prisonerExists = prisoner.queryDataPrisoner();
-		if (prisonerExists) {
-			// LEE HORARIOS DISPONIBLES
-			loadSchedule();
-			// INGRESA HORARIO ID
-			do {
-				try {
-					System.out.println("--------------------------------------");
-					System.out.println("Ingresa el ID del horario (1-7): ");
-					scheduleId = cin.nextInt();
-					// CONTROLA QUE EL USUARIO INGRESE VALOR NUMÉRICO
-				} catch (InputMismatchException e) {
-					cin = new Scanner(System.in);
-				}
-			} while (scheduleId < 1 || scheduleId > 7);
-			// REGISTRA VISITA
-			try {
-				// CREA VISITAS.CSV
-				writer = new FileWriter(VISITS_FILE_NAME, true); // TRUE PARA QUE ACTUALICE EL ARCHIVO
-				file = new File(VISITS_FILE_NAME);
-				// SI NO EXISTE, CREA VISITAS.CSV
-				if (file.length() == 0) {
-					writer.append("horarioId,cedula visitante, cedula ppl\n");
-				}
-				// AGREGA HORARIOID, CEDULA VISITANTE Y PPL
-				writer.append(scheduleId + "," + visitant.dni + ", " + prisoner.dni);
-				writer.write("\n");
-				// CIERRA ESCRITOR
-				writer.close();
-				System.out.println("La visita se ha reservado correctamente");
-			} catch (IOException e) {
-				System.err.println("La visita no ha sido reservada");
-			}
-		}
->>>>>>> 63b84514c526320e742b3e195d1a65a0c033ae84
 	}
 
 	public void showMenu() {
@@ -223,10 +166,6 @@ public class Group_SystemPrisoner {
 				System.out.println("4. Salir");
 				System.out.print("Ingresa una opción (1-4): ");
 				opMenu = cin.nextInt();
-<<<<<<< HEAD
-=======
-
->>>>>>> 63b84514c526320e742b3e195d1a65a0c033ae84
 				switch (opMenu) {
 				case 1: {
 					prisoner.queryDataPrisoner();

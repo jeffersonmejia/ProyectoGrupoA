@@ -137,13 +137,7 @@ public class GroupA_Visitant extends GroupA_Person {
 		visitantJSONObject.put("año nacimiento", yearBorn);
 		visitantJSONObject.put("relacion", relationPrisoner);
 		visitantJSONObject.put("motivo visita", reasonVisit);
-<<<<<<< HEAD
 		visitantJSONArray.add(visitantJSONObject);
-=======
-
-		visitantJSONArray.add(visitantJSONObject);
-
->>>>>>> 63b84514c526320e742b3e195d1a65a0c033ae84
 		// VERIFICAR SI YA EXISTEN DATOS EN EL .JSON
 		JSONParser jsonParser = new JSONParser();
 		try (FileReader reader = new FileReader(VISITANTS_FILE_NAME)) {
