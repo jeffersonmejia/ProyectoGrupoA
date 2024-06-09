@@ -11,52 +11,51 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 //HEREDA CLASE PERSONA
-public class GrupoA_Visitant extends GrupoA_Person {
+public class GroupA_Visitant extends GroupA_Person {
 	// DECLARACIÓN ATRIBUTO
-	private String visitantId, relationPrisoner, reasonVisita, VISITANTS_FILE_NAME;
-	private JSONObject visitanteJSONObject;
-	private JSONArray visitanteJSONArray;
-	private JSONArray pplJSONArray;
+	private String visitantId, relationPrisoner, reasonVisit, VISITANTS_FILE_NAME;
+	private JSONObject visitantJSONObject;
+	private JSONArray visitantJSONArray;
+	private JSONArray prisonerJSONArray;
 	private JSONParser parser;
 	public boolean visitantExist, isDniPrisoner;
 	private Object objectParser;
-	private GrupoA_Prisoner prisoner;
+	private GroupA_Prisoner prisoner;
 	private Scanner cin;
 
-	public GrupoA_Visitant(String visitantId, String dni, String name, String lastName, char gender,
-			String nationality, int age, int yearBorn, String relationPrisoner, String reasonVisita,
-			GrupoA_Prisoner prisoner) {
+	public GroupA_Visitant(String visitantId, String dni, String name, String lastName, char gender, String nationality,
+			int age, int yearBorn, String relationPrisoner, String reasonVisit, GroupA_Prisoner prisoner) {
 		// ASIGNACIÓN VALORES DE ATRIBUTOS HEREDADOS
 		super(dni, name, lastName, gender, nationality, age, yearBorn);
 		// ASIGNACIÓN VALORES ATRIBUTOS PROPIOS
 		this.visitantId = visitantId;
 		this.relationPrisoner = relationPrisoner;
-		this.reasonVisita = reasonVisita;
+		this.reasonVisit = reasonVisit;
 		this.prisoner = prisoner;
 		// LECTURA & ESCRITURA .JSON
-		this.visitanteJSONObject = new JSONObject();
-		this.visitanteJSONArray = new JSONArray();
+		this.visitantJSONObject = new JSONObject();
+		this.visitantJSONArray = new JSONArray();
 		this.parser = new JSONParser();
 		this.objectParser = null;
 		this.visitantExist = false;
 		this.isDniPrisoner = false;
 		// NOMENCLATURA ARCHIVOS
 		this.VISITANTS_FILE_NAME = "visitants.json";
-		this.pplJSONArray = new JSONArray();
+		this.prisonerJSONArray = new JSONArray();
 		cin = new Scanner(System.in);
 	}
 
-	public void consultarVisitante(String cedula) {
+	public void queryVisitant(String dni) {
 		// REINICIO ATRIBUTO QUE VERIFICA SI EXISTE VISITANTE
 		visitantExist = false;
 		try (FileReader reader = new FileReader(VISITANTS_FILE_NAME)) {
 			// PARSEAR .JSON A OBJETO JAVA
 			objectParser = parser.parse(reader);
-			visitanteJSONArray = (JSONArray) objectParser;
+			visitantJSONArray = (JSONArray) objectParser;
 			// BUSCAR SI YA EXISTE UN VISITANTE CON LA MISMA CÉDULA
-			for (Object object : visitanteJSONArray) {
-				visitanteJSONObject = (JSONObject) object;
-				if (visitanteJSONObject.get("cedula").equals(cedula)) {
+			for (Object object : visitantJSONArray) {
+				visitantJSONObject = (JSONObject) object;
+				if (visitantJSONObject.get("cedula").equals(dni)) {
 					visitantExist = true;
 					break;
 				} else {
@@ -68,7 +67,7 @@ public class GrupoA_Visitant extends GrupoA_Person {
 		}
 	}
 
-	public void ingresarDatosVisitante() {
+	public void getVisitantData() {
 		isDniPrisoner = false;
 		// PEDIDO DATOS GENERALES
 		System.out.println("--------------------------------------");
@@ -80,7 +79,7 @@ public class GrupoA_Visitant extends GrupoA_Person {
 				// CONTROL DIGITOS CEDULA
 			} while (dni.length() != 10);
 			// CONTROL EXISTENCIA USUARIO VISITANTE
-			consultarVisitante(dni);
+			queryVisitant(dni);
 			if (visitantExist) {
 				System.out.println("--------------------------------------");
 				System.out.println("El visitante con cédula " + dni + " ya existe en el sistema");
@@ -91,12 +90,12 @@ public class GrupoA_Visitant extends GrupoA_Person {
 				Object objectParser = parser.parse(reader);
 				// PARSEA JSON A OBJETO
 				if (objectParser instanceof JSONObject) {
-					pplJSONArray.add((JSONObject) objectParser);
+					prisonerJSONArray.add((JSONObject) objectParser);
 				} else if (objectParser instanceof JSONArray) {
-					pplJSONArray = (JSONArray) objectParser;
+					prisonerJSONArray = (JSONArray) objectParser;
 				}
 				// LEE JSON
-				for (Object obj : pplJSONArray) {
+				for (Object obj : prisonerJSONArray) {
 					JSONObject jsonObj = (JSONObject) obj;
 					prisoner.dni = (String) jsonObj.get("dni");
 					if (dni.equals(prisoner.dni)) {
@@ -116,48 +115,45 @@ public class GrupoA_Visitant extends GrupoA_Person {
 		System.out.print("Relacion con PPL: ");
 		relationPrisoner = cin.nextLine();
 		System.out.print("Motivo de la Visita: ");
-		reasonVisita = cin.nextLine();
+		reasonVisit = cin.nextLine();
 
 		// GENERACIÓN ID ÚNICO (NOMBRE & 4 ÚLTIMOS DIGITOS CEDULA)
 		visitantId = name.split("")[0] + dni.substring(dni.length() - 4);
 		// GUARDADO DE DATOS EN .JSON
-		this.guardarDatosVisitante();
+		this.saveData();
 	}
 
-	private void guardarDatosVisitante() {
+	private void saveData() {
 		// INICIALIZACIÓN OBJETO
-		visitanteJSONObject = new JSONObject();
+		visitantJSONObject = new JSONObject();
 		// GUARDADO FORMATO JSON
-		visitanteJSONObject.put("visitante ID", visitantId);
-		visitanteJSONObject.put("cedula", dni);
-		visitanteJSONObject.put("nombre", name);
-		visitanteJSONObject.put("apellido", lastName);
-		visitanteJSONObject.put("genero", Character.toString(gender));
-		visitanteJSONObject.put("nacionalidad", nationality);
-		visitanteJSONObject.put("edad", age);
-		visitanteJSONObject.put("año nacimiento", yearBorn);
-		visitanteJSONObject.put("relacion", relationPrisoner);
-		visitanteJSONObject.put("motivo visita", reasonVisita);
-
-		visitanteJSONArray.add(visitanteJSONObject);
-
+		visitantJSONObject.put("visitante ID", visitantId);
+		visitantJSONObject.put("cedula", dni);
+		visitantJSONObject.put("nombre", name);
+		visitantJSONObject.put("apellido", lastName);
+		visitantJSONObject.put("genero", Character.toString(gender));
+		visitantJSONObject.put("nacionalidad", nationality);
+		visitantJSONObject.put("edad", age);
+		visitantJSONObject.put("año nacimiento", yearBorn);
+		visitantJSONObject.put("relacion", relationPrisoner);
+		visitantJSONObject.put("motivo visita", reasonVisit);
+		visitantJSONArray.add(visitantJSONObject);
 		// VERIFICAR SI YA EXISTEN DATOS EN EL .JSON
 		JSONParser jsonParser = new JSONParser();
 		try (FileReader reader = new FileReader(VISITANTS_FILE_NAME)) {
 			// PARSEAR .JSON A OBJETO JAVA
 			Object obj = jsonParser.parse(reader);
-			visitanteJSONArray = (JSONArray) obj;
+			visitantJSONArray = (JSONArray) obj;
 			// AGREGAR DATOS ANTERIORES
-			visitanteJSONArray.add(visitanteJSONObject);
+			visitantJSONArray.add(visitantJSONObject);
 		} catch (IOException | ParseException e) {
 			// SI NO EXISTE EL ARCHIVO INICIALIZAR JSON ARRAY NUEVAMENTE
-			visitanteJSONArray = new JSONArray();
+			visitantJSONArray = new JSONArray();
 		}
-
 		// GUARDA DATOS DEL .JSON
 		try (FileWriter file = new FileWriter(VISITANTS_FILE_NAME)) {
 			// ESCRITURA JSON
-			file.write(visitanteJSONArray.toJSONString());
+			file.write(visitantJSONArray.toJSONString());
 			// LIMPIAR BUFFER ARCHIVO
 			file.flush();
 			showData();
@@ -165,6 +161,7 @@ public class GrupoA_Visitant extends GrupoA_Person {
 			// IMPRIME ERRORES SI NO GUARDA EL ARCHIVO
 			System.out.println("El archivo no existe, se creara uno nuevo");
 		}
+
 	}
 
 	// IMPLEMENTACIÓN MÉTODO POLIMORFISMO DE CLASE PADRE PERSONA
@@ -180,6 +177,6 @@ public class GrupoA_Visitant extends GrupoA_Person {
 		System.out.println("Edad: " + age + " años");
 		System.out.println("Año nacimiento: " + yearBorn);
 		System.out.println("Relación: " + relationPrisoner);
-		System.out.println("Motivo preso: " + reasonVisita);
+		System.out.println("Motivo preso: " + reasonVisit);
 	}
 }

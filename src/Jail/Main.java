@@ -3,10 +3,10 @@ package Jail;
 public class Main {
 	public static void main(String[] args) {
 		// HORARIO DISPONIBLE DE VISITA
-		String horariosVisita[] = {};
+		String defaultSchedule[] = {};
 		// INSTANCIACIÓN DEL SISTEMA
-		GrupoA_SystemPrisoner sistemaPPL = new GrupoA_SystemPrisoner("", 0, horariosVisita, "");
+		Group_SystemPrisoner systemPrisoner = new Group_SystemPrisoner("", 0, defaultSchedule, "");
 		// LLAMADO AL MENÚ PRINCIPAL
-		sistemaPPL.mostrarMenu();
+		systemPrisoner.showMenu();
 	}
 }

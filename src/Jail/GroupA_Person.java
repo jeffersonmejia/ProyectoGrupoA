@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;//INGRESO DE DATOS POR TECLADO
 
-public abstract class GrupoA_Person {
+public abstract class GroupA_Person {
 	// DECLARACIÓN DE ATRIBUTOS
 	protected String dni, name, lastName, nationality;
 	protected char gender;
@@ -12,7 +12,7 @@ public abstract class GrupoA_Person {
 	private Scanner cin;// PROTECTED PARA REUTILIZAR SCANNER EN CLASES HIJAS
 	private LocalDate currentYear;
 
-	public GrupoA_Person(String dni, String name, String lastName, char gender, String nationality, int age,
+	public GroupA_Person(String dni, String name, String lastName, char gender, String nationality, int age,
 			int yearBorn) {
 		// INICIALIZACIÓN DE ATRIBUTOS
 		this.dni = dni;
@@ -63,6 +63,14 @@ public abstract class GrupoA_Person {
 		age = currentYear.getYear() - yearBorn;
 		// LIMPIAR BUFFER
 		this.cin = new Scanner(System.in);
+	}
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 
 	// DECLARACIÓN MÉTODO POLIMORFISMO
